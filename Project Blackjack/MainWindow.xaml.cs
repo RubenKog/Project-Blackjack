@@ -39,6 +39,9 @@ namespace Project_Blackjack
         int scoreSpeler = 0;
         int scoreBank = 0;
 
+        //Speler of bank een kaart geven?
+        bool isSpeler;
+
         //Gamronde afgelopen?
         bool rondeVoltooid = false;
 
@@ -50,10 +53,12 @@ namespace Project_Blackjack
         private void BtnDeel_Click(object sender, RoutedEventArgs e)
         {
             if (rondeVoltooid == false)
-            { 
-                Speler_Kaart();
-                Speler_Kaart();
-                Bank_Kaart();
+            {
+                isSpeler = true;
+                Geef_Kaart();
+                Geef_Kaart();
+                isSpeler = false;
+                Geef_Kaart();
                 BtnDeel.IsEnabled = false;
                 BtnHit.IsEnabled = true;
                 BtnStand.IsEnabled = true;
@@ -67,22 +72,27 @@ namespace Project_Blackjack
             
 
         }
-        private void Speler_Kaart()
+       
+        private async void Geef_Kaart()
         {
-            Kaart_Trekken();
-            sbS.AppendLine($"{kaartType} {kaartWaarde}");
-            scoreSpeler = scoreSpeler + kaartScore;
-            LijstSpeler.Text = sbS.ToString();
-            TxtSScore.Content = scoreSpeler.ToString();
+            
+            if (isSpeler == true)
+            {
 
-        }
-        private void Bank_Kaart()
-        {
-            Kaart_Trekken();
-            sbB.AppendLine($"{kaartType} {kaartWaarde}");
-            scoreBank = scoreBank + kaartScore;
-            LijstBank.Text = sbB.ToString();
-            TxtBScore.Content = scoreBank.ToString();
+                Kaart_Trekken();
+                sbS.AppendLine($"{kaartType} {kaartWaarde}");
+                scoreSpeler = scoreSpeler + kaartScore;
+                LijstSpeler.Text = sbS.ToString();
+                TxtSScore.Content = scoreSpeler.ToString();
+            }
+            else if (isSpeler == false)
+            {
+                Kaart_Trekken();
+                sbB.AppendLine($"{kaartType} {kaartWaarde}");
+                scoreBank = scoreBank + kaartScore;
+                LijstBank.Text = sbB.ToString();
+                TxtBScore.Content = scoreBank.ToString();
+            }
         }
 
 
@@ -90,7 +100,8 @@ namespace Project_Blackjack
 
         private void BtnHit_Click(object sender, RoutedEventArgs e)
         {
-            Speler_Kaart();
+            isSpeler = true;
+            Geef_Kaart();
 
             if (scoreSpeler >= 21)
             {
@@ -103,8 +114,9 @@ namespace Project_Blackjack
 
         private void BtnStand_Click(object sender, RoutedEventArgs e)
         {
+            isSpeler = false;
             while (scoreBank <= 16)
-            { Bank_Kaart(); }
+            { Geef_Kaart(); }
 
             if (scoreBank >= 16)
             {
