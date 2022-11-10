@@ -1,0 +1,44 @@
+﻿<Window x:Class="Project_Blackjack.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_Blackjack"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>            
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Width="200" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button IsEnabled="True" Name="BtnDeel" Content="Delen" Margin="0,0,0,60" Height="40" Click="BtnDeel_Click"/>
+            <Button IsEnabled="False" Name="BtnHit" Content="Hit" Margin="0,0,0,60" Height="40" Click="BtnHit_Click"/>
+            <Button IsEnabled="False" Name="BtnStand" Content="Stand" Height="40" Click="BtnStand_Click" />
+
+        </StackPanel>
+        
+        <DockPanel Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
+            <TextBox IsReadOnly="True" Name="LijstSpeler" Text="" FontSize="13" Background="#FFAEAEAE" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </DockPanel>
+        
+        <DockPanel Grid.Row="1" Grid.Column="3" Margin="10,10,10,10">
+            <TextBox IsReadOnly="True" Name="LijstBank" Text="" FontSize="13" Background="#FFAEAEAE" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </DockPanel>
+        
+        <Label Grid.Row="0" Grid.Column="0" Content="Speler" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+        <Label Grid.Row="0" Grid.Column="2" Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+        <Label Name="TxtSScore" Grid.Row="3" Grid.Column="0" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+        <Label Name="TxtBScore" Grid.Row="3" Grid.Column="2" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+        <Label Name="TxtStatus" Grid.Row="3" Grid.Column="1" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+    </Grid>
+    
+    
+</Window>
