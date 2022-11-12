@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Project_Blackjack
 {
@@ -39,6 +41,11 @@ namespace Project_Blackjack
         int scoreSpeler = 0;
         int scoreBank = 0;
 
+        //Aantal azen
+        int aasSpeler = 0;
+        int aasBank = 0;
+
+
         //Speler of bank een kaart geven?
         bool isSpeler;
 
@@ -50,19 +57,23 @@ namespace Project_Blackjack
             InitializeComponent();
         }
 
-        private void BtnDeel_Click(object sender, RoutedEventArgs e)
+        private async void BtnDeel_Click(object sender, RoutedEventArgs e)
         {
+            //Delen bij start van spel
             if (rondeVoltooid == false)
             {
-                isSpeler = true;
+                isSpeler = true;               
                 Geef_Kaart();
+                await Task.Delay(500);
                 Geef_Kaart();
-                isSpeler = false;
+                await Task.Delay(500);
+                isSpeler = false;               
                 Geef_Kaart();
                 BtnDeel.IsEnabled = false;
                 BtnHit.IsEnabled = true;
                 BtnStand.IsEnabled = true;
             }
+            //Deelknop is resetknop bij einde van het spel
             if (rondeVoltooid==true)
             {
                 Gameronde_Reset();
@@ -73,13 +84,23 @@ namespace Project_Blackjack
 
         }
        
-        private async void Geef_Kaart()
+        private void Geef_Kaart()
         {
+            //Controle of de kaart gegeven moet worden aan speler of bank
+            //Updaten van de kaartlijsten en score
+            //Bijhouden van aantal getrokken azen
+            
             
             if (isSpeler == true)
             {
-
+                
                 Kaart_Trekken();
+                if( rndWaarde == 1)
+                {
+                    aasSpeler++;
+                }
+
+
                 sbS.AppendLine($"{kaartType} {kaartWaarde}");
                 scoreSpeler = scoreSpeler + kaartScore;
                 LijstSpeler.Text = sbS.ToString();
@@ -87,36 +108,72 @@ namespace Project_Blackjack
             }
             else if (isSpeler == false)
             {
+                
                 Kaart_Trekken();
+                if (rndWaarde == 1)
+                {
+                    aasBank++;
+                }
                 sbB.AppendLine($"{kaartType} {kaartWaarde}");
                 scoreBank = scoreBank + kaartScore;
                 LijstBank.Text = sbB.ToString();
                 TxtBScore.Content = scoreBank.ToString();
             }
         }
+        
 
 
-
-
-        private void BtnHit_Click(object sender, RoutedEventArgs e)
+       
+        private async void BtnHit_Click(object sender, RoutedEventArgs e)
         {
             isSpeler = true;
-            Geef_Kaart();
+            await Task.Delay(500);
+            Geef_Kaart();     
+            
+            while (scoreSpeler > 21 && aasSpeler >0)
+            {
+                scoreSpeler = scoreSpeler - 10;
+                aasSpeler--;
 
+            }
+            TxtSScore.Content = scoreSpeler.ToString();
             if (scoreSpeler >= 21)
             {
                 Game_Einde();
             }
 
 
-
         }
 
-        private void BtnStand_Click(object sender, RoutedEventArgs e)
+        private async void BtnStand_Click(object sender, RoutedEventArgs e)
         {
             isSpeler = false;
-            while (scoreBank <= 16)
-            { Geef_Kaart(); }
+            //GeefAanBank is noodzakelijk: Anders stopt bank met kaarten krijgen na overschrijden van 21 met een aas in bezit
+            bool geefAanBank = true;
+            while (geefAanBank == true)
+            {
+
+                while (scoreBank <= 16)
+                {
+                    await Task.Delay(500);
+                    Geef_Kaart(); 
+                }
+
+                while (scoreBank > 21 && aasBank > 0)
+                {
+                    scoreBank = scoreBank - 10;
+                    aasBank--;
+
+                }
+                TxtBScore.Content = scoreBank.ToString();
+                if (scoreBank >= 16)
+                { 
+                geefAanBank=false;
+                }
+                    
+
+                
+            }
 
             if (scoreBank >= 16)
             {
@@ -154,6 +211,7 @@ namespace Project_Blackjack
 
             }
 
+
             else if (scoreSpeler > 21)
             {
                 TxtStatus.Content = "Verloren";
@@ -183,7 +241,8 @@ namespace Project_Blackjack
 
                 sbS.Clear();
                 sbB.Clear();
-
+                aasSpeler = 0;
+                aasBank = 0;
 
             }
         }
@@ -212,7 +271,13 @@ namespace Project_Blackjack
                 kaartType = "Klaveren";
             }
 
-            if (rndWaarde<11)
+            if (rndWaarde==1)
+            {
+                kaartWaarde = "aas (1 of 11)";
+                kaartScore = 11;
+            }
+
+            if (rndWaarde<11 && rndWaarde >1)
             {
                 kaartWaarde = $"{rndWaarde}";
                 kaartScore = rndWaarde;
