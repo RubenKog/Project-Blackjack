@@ -62,16 +62,28 @@ namespace Project_Blackjack
             //Delen bij start van spel
             if (rondeVoltooid == false)
             {
+                BtnDeel.IsEnabled = false;
+                
                 isSpeler = true;               
                 Geef_Kaart();
                 await Task.Delay(500);
                 Geef_Kaart();
+                while (scoreSpeler > 21 && aasSpeler > 0)
+                {
+                    scoreSpeler = scoreSpeler - 10;
+                    aasSpeler--;
+
+                }
+
+                TxtSScore.Content = scoreSpeler.ToString();
                 await Task.Delay(500);
                 isSpeler = false;               
                 Geef_Kaart();
-                BtnDeel.IsEnabled = false;
                 BtnHit.IsEnabled = true;
                 BtnStand.IsEnabled = true;
+
+                
+
             }
             //Deelknop is resetknop bij einde van het spel
             if (rondeVoltooid==true)
@@ -80,7 +92,11 @@ namespace Project_Blackjack
                 BtnDeel.Content = "Delen";
                 rondeVoltooid=false;
             }
-            
+            //Indien speler wint met de eerste 2 kaarten moet dit onmiddelijk herkend worden
+            if (scoreSpeler == 21)
+            {
+                Game_Einde();
+            }
 
         }
        
@@ -126,8 +142,9 @@ namespace Project_Blackjack
        
         private async void BtnHit_Click(object sender, RoutedEventArgs e)
         {
+            BtnHit.IsEnabled = false;
             isSpeler = true;
-            await Task.Delay(500);
+            await Task.Delay(250);
             Geef_Kaart();     
             
             while (scoreSpeler > 21 && aasSpeler >0)
@@ -137,16 +154,19 @@ namespace Project_Blackjack
 
             }
             TxtSScore.Content = scoreSpeler.ToString();
+            BtnHit.IsEnabled = true;
             if (scoreSpeler >= 21)
             {
                 Game_Einde();
             }
 
-
+            
         }
 
         private async void BtnStand_Click(object sender, RoutedEventArgs e)
         {
+            BtnStand.IsEnabled = false;
+            BtnHit.IsEnabled = false;
             isSpeler = false;
             //GeefAanBank is noodzakelijk: Anders stopt bank met kaarten krijgen na overschrijden van 21 met een aas in bezit
             bool geefAanBank = true;
