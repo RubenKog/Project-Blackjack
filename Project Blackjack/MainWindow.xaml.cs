@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,11 @@ namespace Project_Blackjack
         string kaartType;
         string kaartWaarde;
 
+        //Kapitaal (Inzet en budget)
+        int spelerInzet;
+        int spelerBudget = 0;
+
+
         //Score bijhouden
         int kaartScore;
         int scoreSpeler = 0;
@@ -55,10 +61,20 @@ namespace Project_Blackjack
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private async void BtnDeel_Click(object sender, RoutedEventArgs e)
         {
+            //Indien budget = 0, geef nieuw budget
+            if (spelerBudget == 0)
+            {
+                Start_Kapitaal();
+            }
+
+            //Laat speler geld inzetten
+            Inzet();
+
             //Delen bij start van spel
             if (rondeVoltooid == false)
             {
@@ -161,6 +177,27 @@ namespace Project_Blackjack
             }
             
         }
+        private void Start_Kapitaal()
+        {
+            bool BudgetOK = false;
+
+            while (BudgetOK == false)
+            {
+                BudgetOK = int.TryParse(Interaction.InputBox("Geef startkapitaal", "Invoer", ""), out spelerBudget);
+                if (BudgetOK == false)
+                {
+                    MessageBox.Show("Dat is een foute invoer, geef een getal", "Foutieve invoer");
+                }
+            }
+
+        }
+
+        private void Inzet()
+        {
+            
+
+        }
+
         private void Geef_Kaart()
         {
             //Controle of de kaart gegeven moet worden aan speler of bank
