@@ -24,7 +24,7 @@ namespace Project_Blackjack
     {
         //GLobale declaraties:
 
-        //Stringbuilders:
+        //Stringbuilders: S = Speler, B = Bank
         StringBuilder sbS = new StringBuilder();
         StringBuilder sbB = new StringBuilder();
 
@@ -70,7 +70,7 @@ namespace Project_Blackjack
                 Geef_Kaart();
                 while (scoreSpeler > 21 && aasSpeler > 0)
                 {
-                    scoreSpeler = scoreSpeler - 10;
+                    scoreSpeler -= 10;
                     aasSpeler--;
 
                 }
@@ -98,63 +98,24 @@ namespace Project_Blackjack
                 Game_Einde();
             }
 
-        }
-       
-        private void Geef_Kaart()
-        {
-            //Controle of de kaart gegeven moet worden aan speler of bank
-            //Updaten van de kaartlijsten en score
-            //Bijhouden van aantal getrokken azen
-            
-            
-            if (isSpeler == true)
-            {
-                
-                Kaart_Trekken();
-                if( rndWaarde == 1)
-                {
-                    aasSpeler++;
-                }
-
-
-                sbS.AppendLine($"{kaartType} {kaartWaarde}");
-                scoreSpeler = scoreSpeler + kaartScore;
-                LijstSpeler.Text = sbS.ToString();
-                TxtSScore.Content = scoreSpeler.ToString();
-            }
-            else if (isSpeler == false)
-            {
-                
-                Kaart_Trekken();
-                if (rndWaarde == 1)
-                {
-                    aasBank++;
-                }
-                sbB.AppendLine($"{kaartType} {kaartWaarde}");
-                scoreBank = scoreBank + kaartScore;
-                LijstBank.Text = sbB.ToString();
-                TxtBScore.Content = scoreBank.ToString();
-            }
-        }
-        
-
-
-       
+        }       
         private async void BtnHit_Click(object sender, RoutedEventArgs e)
         {
             BtnHit.IsEnabled = false;
+            BtnStand.IsEnabled = false;
             isSpeler = true;
             await Task.Delay(250);
             Geef_Kaart();     
             
             while (scoreSpeler > 21 && aasSpeler >0)
             {
-                scoreSpeler = scoreSpeler - 10;
+                scoreSpeler -= 10;
                 aasSpeler--;
 
             }
             TxtSScore.Content = scoreSpeler.ToString();
             BtnHit.IsEnabled = true;
+            BtnStand.IsEnabled = true;
             if (scoreSpeler >= 21)
             {
                 Game_Einde();
@@ -162,7 +123,6 @@ namespace Project_Blackjack
 
             
         }
-
         private async void BtnStand_Click(object sender, RoutedEventArgs e)
         {
             BtnStand.IsEnabled = false;
@@ -173,7 +133,7 @@ namespace Project_Blackjack
             while (geefAanBank == true)
             {
 
-                while (scoreBank <= 16)
+                while (scoreBank < 17)
                 {
                     await Task.Delay(500);
                     Geef_Kaart(); 
@@ -181,12 +141,12 @@ namespace Project_Blackjack
 
                 while (scoreBank > 21 && aasBank > 0)
                 {
-                    scoreBank = scoreBank - 10;
+                    scoreBank -= 10;
                     aasBank--;
 
                 }
                 TxtBScore.Content = scoreBank.ToString();
-                if (scoreBank >= 16)
+                if (scoreBank >= 17)
                 { 
                 geefAanBank=false;
                 }
@@ -195,114 +155,84 @@ namespace Project_Blackjack
                 
             }
 
-            if (scoreBank >= 16)
+            if (scoreBank >= 17)
             {
                 Game_Einde();
             }
             
         }
-
-        private void Game_Einde()
+        private void Geef_Kaart()
         {
-            BtnHit.IsEnabled = false;
-            BtnStand.IsEnabled = false;
-            BtnDeel.IsEnabled = true;
-            rondeVoltooid = true;
-            BtnDeel.Content = "Nieuwe Ronde";
+            //Controle of de kaart gegeven moet worden aan speler of bank
+            //Updaten van de kaartlijsten en score
+            //Bijhouden van aantal getrokken azen
 
-            if (scoreSpeler<21)
+
+            if (isSpeler == true)
             {
-                if (scoreBank > 21)
+
+                Kaart_Trekken();
+                if (rndWaarde == 1)
                 {
-                    TxtStatus.Content = "Gewonnen";
-                }
-                else if (scoreSpeler > scoreBank)
-                {
-                    TxtStatus.Content = "Gewonnen";
-                }
-                else if (scoreSpeler < scoreBank)
-                {
-                    TxtStatus.Content = "Verloren";
-                }
-                else if(scoreSpeler == scoreBank)
-                {
-                    TxtStatus.Content = "Gelijkspel";
+                    aasSpeler++;
                 }
 
+
+                sbS.AppendLine($"{kaartType} {kaartWaarde}");
+                scoreSpeler += kaartScore;
+                LijstSpeler.Text = sbS.ToString();
+                TxtSScore.Content = scoreSpeler.ToString();
             }
-
-
-            else if (scoreSpeler > 21)
+            else if (isSpeler == false)
             {
-                TxtStatus.Content = "Verloren";
 
-            }
-            else if (scoreSpeler == 21)
-            {
-                TxtStatus.Content = "Gewonnen";
-
-            }
-
-
-
-        }
-
-        private void Gameronde_Reset()
-        {
-            if (rondeVoltooid == true)
-            {
-                TxtStatus.Content = "";
-                TxtBScore.Content = "";
-                TxtSScore.Content = "";
-                scoreSpeler = 0;
-                scoreBank = 0;
-                LijstBank.Text = "";
-                LijstSpeler.Text = "";
-
-                sbS.Clear();
-                sbB.Clear();
-                aasSpeler = 0;
-                aasBank = 0;
-
+                Kaart_Trekken();
+                if (rndWaarde == 1)
+                {
+                    aasBank++;
+                }
+                sbB.AppendLine($"{kaartType} {kaartWaarde}");
+                scoreBank += kaartScore;
+                LijstBank.Text = sbB.ToString();
+                TxtBScore.Content = scoreBank.ToString();
             }
         }
-
         private void Kaart_Trekken()
         {
             //Generatie van kaarttype en -waarde.
             rndType = rnd.Next(0, 4);
             rndWaarde = rnd.Next(1, 14);
-            
+
             //Interpretatie van type en waarde
-            if (rndType==0)
+            if (rndType == 0)
             {
                 kaartType = "Harten";
             }
-            else if (rndType==1)
+            else if (rndType == 1)
             {
                 kaartType = "Ruiten";
             }
-            else if (rndType==2)
+            else if (rndType == 2)
             {
                 kaartType = "Schoppen";
             }
-            else if (rndType==3)
+            else if (rndType == 3)
             {
                 kaartType = "Klaveren";
             }
 
-            if (rndWaarde==1)
+            if (rndWaarde == 1)
             {
                 kaartWaarde = "aas (1 of 11)";
                 kaartScore = 11;
             }
 
-            if (rndWaarde<11 && rndWaarde >1)
+            if (rndWaarde < 11 && rndWaarde > 1)
             {
                 kaartWaarde = $"{rndWaarde}";
                 kaartScore = rndWaarde;
             }
-            else if (rndWaarde>10)
+            else if (rndWaarde > 10)
             {
 
                 kaartScore = 10;
@@ -323,9 +253,80 @@ namespace Project_Blackjack
                 }
 
             }
-            
+
 
         }
+        private void Game_Einde()
+        {
+            BtnHit.IsEnabled = false;
+            BtnStand.IsEnabled = false;
+            BtnDeel.IsEnabled = true;
+            rondeVoltooid = true;
+            BtnDeel.Content = "Nieuwe Ronde";
+
+            if (scoreSpeler<21)
+            {
+                if (scoreBank > 21)
+                {
+                    TxtStatus.Content = "Gewonnen";
+                    TxtStatus.Foreground= Brushes.Green;
+                }
+                else if (scoreSpeler > scoreBank)
+                {
+                    TxtStatus.Content = "Gewonnen";
+                    TxtStatus.Foreground = Brushes.Green;
+                }
+                else if (scoreSpeler < scoreBank)
+                {
+                    TxtStatus.Content = "Verloren";
+                    TxtStatus.Foreground = Brushes.Red;
+                }
+                else if(scoreSpeler == scoreBank)
+                {
+                    TxtStatus.Content = "Push";
+                }
+
+            }
+
+
+            else if (scoreSpeler > 21)
+            {
+                TxtStatus.Content = "Verloren";
+                TxtStatus.Foreground = Brushes.Red;
+
+            }
+            else if (scoreSpeler == 21)
+            {
+                TxtStatus.Content = "Gewonnen";
+                TxtStatus.Foreground = Brushes.Green;
+            }
+
+
+
+        }
+        private void Gameronde_Reset()
+        {
+            if (rondeVoltooid == true)
+            {
+                TxtStatus.Foreground = Brushes.Black  ;
+                TxtStatus.Content = "";
+                TxtBScore.Content = "";
+                TxtSScore.Content = "";
+                scoreSpeler = 0;
+                scoreBank = 0;
+                LijstBank.Text = "";
+                LijstSpeler.Text = "";
+
+                sbS.Clear();
+                sbB.Clear();
+                aasSpeler = 0;
+                aasBank = 0;
+
+            }
+        }
+
+
+        
 
 
 
