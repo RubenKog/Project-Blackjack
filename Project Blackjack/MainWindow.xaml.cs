@@ -38,8 +38,8 @@ namespace Project_Blackjack
         string kaartWaarde;
 
         //Kapitaal (Inzet en budget)
-        int spelerInzet;
-        int spelerBudget = 0;
+        float spelerInzet;
+        float spelerBudget = 0;
 
 
         //Score bijhouden
@@ -66,18 +66,21 @@ namespace Project_Blackjack
 
         private async void BtnDeel_Click(object sender, RoutedEventArgs e)
         {
-            //Indien budget = 0, geef nieuw budget
-            if (spelerBudget == 0)
-            {
-                Start_Kapitaal();
-            }
-
-            //Laat speler geld inzetten
-            Inzet();
+            
 
             //Delen bij start van spel
             if (rondeVoltooid == false)
             {
+                //Indien budget = 0, geef nieuw budget
+                if (spelerBudget == 0)
+                {
+                    Start_Kapitaal();
+                }
+
+                //Laat speler geld inzetten
+                Inzet();
+
+                //Start delen
                 BtnDeel.IsEnabled = false;
                 
                 isSpeler = true;               
@@ -183,19 +186,49 @@ namespace Project_Blackjack
 
             while (BudgetOK == false)
             {
-                BudgetOK = int.TryParse(Interaction.InputBox("Geef startkapitaal", "Invoer", ""), out spelerBudget);
+                BudgetOK = float.TryParse(Interaction.InputBox("Geef startkapitaal", "Invoer", ""), out spelerBudget);
                 if (BudgetOK == false)
                 {
-                    MessageBox.Show("Dat is een foute invoer, geef een getal", "Foutieve invoer");
+                    MessageBox.Show("Dat is een foute of te grote invoer, probeer opnieuw door een getal in te voeren", "Foutieve invoer");
                 }
+                if (BudgetOK == true && spelerBudget <= 0)
+                {
+                    MessageBox.Show("Je budget moet groter zijn dan 0", "Foutieve invoer");
+                    BudgetOK = false;
+
+                }
+                
             }
 
         }
 
         private void Inzet()
         {
-            
+            bool InzetOK = false;
+            while (InzetOK == false)
+            {
+                InzetOK = float.TryParse(Interaction.InputBox("Geef inzet", "Invoer", ""), out spelerInzet);
+                if (InzetOK == false)
+                {
+                    MessageBox.Show("Dat is een foute invoer, geef een getal", "Foutieve invoer");
+                }
+                if (InzetOK == true && spelerInzet <= 0)
+                {
+                    MessageBox.Show("De inzet moet groter zijn dan 0", "Foutieve invoer");
+                    InzetOK = false;
 
+                }
+                if (InzetOK == true && spelerBudget < spelerInzet)
+                {
+                    MessageBox.Show($"Je budget is maar {spelerBudget}, gelieve je inzet te verlagen", "Foutieve invoer");
+                    InzetOK = false;
+
+                }
+                
+
+            }
+            TxtGeld.Content = $"Budget = {spelerBudget} (-{spelerInzet})";
+            spelerBudget -= spelerInzet;
         }
 
         private void Geef_Kaart()
@@ -305,22 +338,19 @@ namespace Project_Blackjack
             {
                 if (scoreBank > 21)
                 {
-                    TxtStatus.Content = "Gewonnen";
-                    TxtStatus.Foreground= Brushes.Green;
+                    Game_Gewonnen();
                 }
                 else if (scoreSpeler > scoreBank)
                 {
-                    TxtStatus.Content = "Gewonnen";
-                    TxtStatus.Foreground = Brushes.Green;
+                    Game_Gewonnen();
                 }
                 else if (scoreSpeler < scoreBank)
                 {
-                    TxtStatus.Content = "Verloren";
-                    TxtStatus.Foreground = Brushes.Red;
+                    Game_Verloren();
                 }
                 else if(scoreSpeler == scoreBank)
                 {
-                    TxtStatus.Content = "Push";
+                    Game_Push();
                 }
 
             }
@@ -328,19 +358,51 @@ namespace Project_Blackjack
 
             else if (scoreSpeler > 21)
             {
-                TxtStatus.Content = "Verloren";
-                TxtStatus.Foreground = Brushes.Red;
-
+                Game_Verloren();
             }
             else if (scoreSpeler == 21)
             {
-                TxtStatus.Content = "Gewonnen";
-                TxtStatus.Foreground = Brushes.Green;
+                Game_Verloren();
             }
 
 
 
         }
+
+        private void Game_Gewonnen()
+        {
+            TxtStatus.Content = "Gewonnen";
+            TxtStatus.Foreground = Brushes.Green;
+            if (scoreSpeler == 21)
+            {
+                spelerBudget = spelerBudget + ((5/2)*spelerInzet);
+                
+
+            }
+
+            else if (scoreSpeler < 21)
+            {
+                spelerBudget = spelerBudget + (2 * spelerInzet);
+
+            }
+            TxtGeld.Content = $"Budget = {spelerBudget}";
+        }
+
+        private void Game_Verloren()
+        {
+            TxtStatus.Content = "Verloren";
+            TxtStatus.Foreground = Brushes.Red;
+            TxtGeld.Content = $"Budget = {spelerBudget}";
+
+        }
+
+        private void Game_Push()
+        {
+            TxtStatus.Content = "Push";
+            spelerBudget += spelerInzet;
+            TxtGeld.Content = $"Budget = {spelerBudget}";
+        }
+
         private void Gameronde_Reset()
         {
             if (rondeVoltooid == true)
@@ -358,6 +420,8 @@ namespace Project_Blackjack
                 sbB.Clear();
                 aasSpeler = 0;
                 aasBank = 0;
+                spelerInzet = 0;
+                
 
             }
         }
