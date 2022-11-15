@@ -201,7 +201,6 @@ namespace Project_Blackjack
             }
 
         }
-
         private void Inzet()
         {
             bool InzetOK = false;
@@ -230,7 +229,6 @@ namespace Project_Blackjack
             TxtGeld.Content = $"Budget = {spelerBudget} (-{spelerInzet})";
             spelerBudget -= spelerInzet;
         }
-
         private void Geef_Kaart()
         {
             //Controle of de kaart gegeven moet worden aan speler of bank
@@ -362,20 +360,19 @@ namespace Project_Blackjack
             }
             else if (scoreSpeler == 21)
             {
-                Game_Verloren();
+                Game_Gewonnen();
             }
 
 
 
         }
-
         private void Game_Gewonnen()
         {
             TxtStatus.Content = "Gewonnen";
             TxtStatus.Foreground = Brushes.Green;
             if (scoreSpeler == 21)
             {
-                spelerBudget = spelerBudget + ((5/2)*spelerInzet);
+                spelerBudget = spelerBudget + ((Convert.ToSingle(5.0/2.0)*spelerInzet));
                 
 
             }
@@ -387,7 +384,6 @@ namespace Project_Blackjack
             }
             TxtGeld.Content = $"Budget = {spelerBudget}";
         }
-
         private void Game_Verloren()
         {
             TxtStatus.Content = "Verloren";
@@ -395,14 +391,12 @@ namespace Project_Blackjack
             TxtGeld.Content = $"Budget = {spelerBudget}";
 
         }
-
         private void Game_Push()
         {
             TxtStatus.Content = "Push";
             spelerBudget += spelerInzet;
             TxtGeld.Content = $"Budget = {spelerBudget}";
         }
-
         private void Gameronde_Reset()
         {
             if (rondeVoltooid == true)
