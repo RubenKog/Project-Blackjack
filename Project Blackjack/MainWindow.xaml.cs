@@ -40,6 +40,8 @@ namespace Project_Blackjack
         //Kapitaal (Inzet en budget)
         float spelerInzet;
         float spelerBudget = 0;
+        
+
 
 
         //Score bijhouden
@@ -72,9 +74,11 @@ namespace Project_Blackjack
             if (rondeVoltooid == false)
             {
                 //Indien budget = 0, geef nieuw budget
-                if (spelerBudget == 0)
+                while (spelerBudget == 0)
                 {
                     Start_Kapitaal();
+                    TxtGeld.Content = $"Budget = {spelerBudget}";
+                    
                 }
 
                 //Laat speler geld inzetten
@@ -186,7 +190,7 @@ namespace Project_Blackjack
 
             while (BudgetOK == false)
             {
-                BudgetOK = float.TryParse(Interaction.InputBox("Geef startkapitaal", "Invoer", ""), out spelerBudget);
+                BudgetOK = float.TryParse(Interaction.InputBox("Geef startkapitaal (afronding naar beneden)", "Invoer", ""), out spelerBudget);
                 if (BudgetOK == false)
                 {
                     MessageBox.Show("Dat is een foute of te grote invoer, probeer opnieuw door een getal in te voeren", "Foutieve invoer");
@@ -197,7 +201,17 @@ namespace Project_Blackjack
                     BudgetOK = false;
 
                 }
+
                 
+            }
+            if (spelerBudget >= 1)
+            {
+                spelerBudget = Convert.ToSingle(Math.Floor(spelerBudget));
+            }
+            if (spelerBudget < 1)
+            {
+                MessageBox.Show($"Je hebt een lekker drankje gekocht met je ${spelerBudget} want dit was te laag om in te zetten", "Verfrissend!");
+                spelerBudget = 0;
             }
 
         }
@@ -206,7 +220,7 @@ namespace Project_Blackjack
             bool InzetOK = false;
             while (InzetOK == false)
             {
-                InzetOK = float.TryParse(Interaction.InputBox("Geef inzet", "Invoer", ""), out spelerInzet);
+                InzetOK = float.TryParse(Interaction.InputBox("Geef inzet (afronding naar boven)", "Geef inzet", ""), out spelerInzet);
                 if (InzetOK == false)
                 {
                     MessageBox.Show("Dat is een foute invoer, geef een getal", "Foutieve invoer");
@@ -223,9 +237,17 @@ namespace Project_Blackjack
                     InzetOK = false;
 
                 }
-                
+                if (InzetOK == true && spelerInzet < (Convert.ToSingle(Math.Ceiling(spelerBudget / 10))))
+                {
+                    MessageBox.Show($"Je inzet is maar ${spelerBudget}, je moet minstens ${Math.Ceiling(spelerBudget / 10)} inzetten om te spelen", "Foutieve invoer");
+                    InzetOK = false;
+                }
+
+
 
             }
+
+            spelerInzet = Convert.ToSingle(Math.Ceiling(spelerInzet));
             TxtGeld.Content = $"Budget = {spelerBudget} (-{spelerInzet})";
             spelerBudget -= spelerInzet;
         }
