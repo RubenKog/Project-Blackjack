@@ -10,7 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
-            <ColumnDefinition/>            
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -24,21 +24,24 @@
             <Button IsEnabled="False" Name="BtnStand" Content="Stand" Height="40" Click="BtnStand_Click" />
 
         </StackPanel>
-        
+
         <DockPanel Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
             <TextBox IsReadOnly="True" Name="LijstSpeler" Text="" FontSize="13" Background="#FFAEAEAE" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         </DockPanel>
-        
+
         <DockPanel Grid.Row="1" Grid.Column="3" Margin="10,10,10,10">
             <TextBox IsReadOnly="True" Name="LijstBank" Text="" FontSize="13" Background="#FFAEAEAE" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         </DockPanel>
-        <Label Name="TxtGeld" Content="" Grid.Column="0" Grid.Row="2" FontFamily="Old English Text MT" FontSize="20" />        
+        <Label Name="TxtGeld" Content="" Grid.Column="0" Grid.Row="2" FontFamily="Old English Text MT" FontSize="20" />
         <Label Grid.Row="0" Grid.Column="0" Content="Speler" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Grid.Row="0" Grid.Column="2" Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Name="TxtSScore" Grid.Row="3" Grid.Column="0" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Name="TxtBScore" Grid.Row="3" Grid.Column="2" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Name="TxtStatus" Grid.Row="3" Grid.Column="1" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+        <Image Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+        <CheckBox Name="BtnKapitaal" Grid.Column="0" Grid.Row="2" Content="Custom Startkapitaal" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnKapitaal_Used" Unchecked="BtnKapitaal_Used"/>
+
     </Grid>
-    
-    
+
+
 </Window>

@@ -38,6 +38,7 @@ namespace Project_Blackjack
         string kaartWaarde;
 
         //Kapitaal (Inzet en budget)
+        bool customKapitaal = false;
         float spelerInzet;
         float spelerBudget = 0;
         
@@ -73,12 +74,21 @@ namespace Project_Blackjack
             //Delen bij start van spel
             if (rondeVoltooid == false)
             {
+                
                 //Indien budget = 0, geef nieuw budget
                 while (spelerBudget == 0)
                 {
-                    Start_Kapitaal();
                     TxtGeld.Content = $"Budget = {spelerBudget}";
-                    
+                    if (customKapitaal == true)
+                    {
+                        Start_Kapitaal();
+                        
+                    }
+                    else if (customKapitaal == false)
+                    {
+                        spelerBudget = 100;
+                    }
+                    TxtGeld.Content = $"Budget = {spelerBudget}";
                 }
 
                 //Laat speler geld inzetten
@@ -440,17 +450,37 @@ namespace Project_Blackjack
                 
 
             }
+            if (spelerBudget < 1)
+            {
+                if (spelerBudget == 0) 
+                {
+                    MessageBox.Show($"Je hebt helaas geen geld meer, maar je krijgt een drankje van het huis!", "Verfrissend!");
+                    TxtGeld.Content = $"Budget = {spelerBudget}";
+                }
+                if (spelerBudget > 0)
+                {
+                    MessageBox.Show($"Je hebt nog maar ${spelerBudget} over. Te weinig om verder te spelen. Gelukkig zijn de drankjes goedkoop.", "Verfrissend!");
+                    spelerBudget = 0;
+                    TxtGeld.Content = $"Budget = {spelerBudget}";
+                }
+                    
+                    
+
+            }
         }
 
+        private void BtnKapitaal_Used(object sender, RoutedEventArgs e)
+        {
+            if (customKapitaal == true)
+            {
+                customKapitaal = false;
+            }
+            else if (customKapitaal == false)
+            {
+                customKapitaal = true;
+            }
 
-        
-
-
-
-        
-
-
-
+        }
     }
 
 
