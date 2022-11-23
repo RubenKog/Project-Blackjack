@@ -42,9 +42,6 @@ namespace Project_Blackjack
         float spelerInzet;
         float spelerBudget = 0;
         
-
-
-
         //Score bijhouden
         int kaartScore;
         int scoreSpeler = 0;
@@ -53,7 +50,6 @@ namespace Project_Blackjack
         //Aantal azen
         int aasSpeler = 0;
         int aasBank = 0;
-
 
         //Speler of bank een kaart geven?
         bool isSpeler;
@@ -193,6 +189,18 @@ namespace Project_Blackjack
                 Game_Einde();
             }
             
+        }
+        private void BtnKapitaal_Used(object sender, RoutedEventArgs e)
+        {
+            if (customKapitaal == true)
+            {
+                customKapitaal = false;
+            }
+            else if (customKapitaal == false)
+            {
+                customKapitaal = true;
+            }
+
         }
         private void Start_Kapitaal()
         {
@@ -469,18 +477,7 @@ namespace Project_Blackjack
             }
         }
 
-        private void BtnKapitaal_Used(object sender, RoutedEventArgs e)
-        {
-            if (customKapitaal == true)
-            {
-                customKapitaal = false;
-            }
-            else if (customKapitaal == false)
-            {
-                customKapitaal = true;
-            }
-
-        }
+        
     }
 
 
