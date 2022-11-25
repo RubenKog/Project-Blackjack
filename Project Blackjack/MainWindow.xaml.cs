@@ -25,11 +25,7 @@ namespace Project_Blackjack
     {
         //GLobale declaraties:
 
-        //Stringbuilders: S = Speler, B = Bank
-        StringBuilder sbS = new StringBuilder();
-        StringBuilder sbB = new StringBuilder();
-
-
+        
         //Nodig voor kaartgeneratie:
         Random rnd = new Random();
         int rndType;
@@ -257,7 +253,7 @@ namespace Project_Blackjack
                 }
                 if (InzetOK == true && spelerInzet < (Convert.ToSingle(Math.Ceiling(spelerBudget / 10))))
                 {
-                    MessageBox.Show($"Je inzet is maar ${spelerBudget}, je moet minstens ${Math.Ceiling(spelerBudget / 10)} inzetten om te spelen", "Foutieve invoer");
+                    MessageBox.Show($"Je inzet is maar ${spelerInzet}, je moet minstens ${Math.Ceiling(spelerBudget / 10)} inzetten om te spelen", "Foutieve invoer");
                     InzetOK = false;
                 }
 
@@ -284,11 +280,10 @@ namespace Project_Blackjack
                 {
                     aasSpeler++;
                 }
-
-
-                sbS.AppendLine($"{kaartType} {kaartWaarde}");
-                scoreSpeler += kaartScore;
-                LijstSpeler.Text = sbS.ToString();
+                                
+                
+                scoreSpeler += kaartScore;                
+                LijstSpeler.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtSScore.Content = scoreSpeler.ToString();
             }
             else if (isSpeler == false)
@@ -299,9 +294,9 @@ namespace Project_Blackjack
                 {
                     aasBank++;
                 }
-                sbB.AppendLine($"{kaartType} {kaartWaarde}");
+                
                 scoreBank += kaartScore;
-                LijstBank.Text = sbB.ToString();
+                LijstBank.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtBScore.Content = scoreBank.ToString();
             }
         }
@@ -447,11 +442,8 @@ namespace Project_Blackjack
                 TxtSScore.Content = "";
                 scoreSpeler = 0;
                 scoreBank = 0;
-                LijstBank.Text = "";
-                LijstSpeler.Text = "";
-
-                sbS.Clear();
-                sbB.Clear();
+                LijstBank.Items.Clear();
+                LijstSpeler.Items.Clear();                
                 aasSpeler = 0;
                 aasBank = 0;
                 spelerInzet = 0;
