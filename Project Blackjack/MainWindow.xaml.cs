@@ -27,11 +27,22 @@ namespace Project_Blackjack
 
         
         //Nodig voor kaartgeneratie:
+        //kaartCode is nodig voor identificatie in afbeeldingen en arrays.
         Random rnd = new Random();
         int rndType;
         int rndWaarde;
+        int kaartCode;
+        int aantalKaartSpeler = 0;
+        int aantalKaartBank = 0;
+
         string kaartType;
         string kaartWaarde;
+        
+        
+
+        //Arrays: 
+        int[] alGetrokkenSpeler = new int[11];
+        int[] alGetrokkenBank = new int[11];
 
         //Kapitaal (Inzet en budget)
         bool customKapitaal = false;
@@ -61,12 +72,12 @@ namespace Project_Blackjack
 
         private async void BtnDeel_Click(object sender, RoutedEventArgs e)
         {
-            
+
 
             //Delen bij start van spel
             if (rondeVoltooid == false)
             {
-                
+
                 //Indien budget = 0, geef nieuw budget
                 while (spelerBudget == 0)
                 {
@@ -74,7 +85,7 @@ namespace Project_Blackjack
                     if (customKapitaal == true)
                     {
                         Start_Kapitaal();
-                        
+
                     }
                     else if (customKapitaal == false)
                     {
@@ -88,9 +99,9 @@ namespace Project_Blackjack
 
                 //Start delen
                 BtnDeel.IsEnabled = false;
-                
-                isSpeler = true;               
-                Geef_Kaart();
+
+                isSpeler = true;                
+                Geef_Kaart();                
                 await Task.Delay(500);
                 Geef_Kaart();
                 while (scoreSpeler > 21 && aasSpeler > 0)
@@ -270,31 +281,78 @@ namespace Project_Blackjack
             //Controle of de kaart gegeven moet worden aan speler of bank
             //Updaten van de kaartlijsten en score
             //Bijhouden van aantal getrokken azen
+            //Controle of kaart al getrokken is
+
+
 
 
             if (isSpeler == true)
             {
+                bool kaartAlGetrokken = true;
 
-                Kaart_Trekken();
+                while (kaartAlGetrokken == true)
+                {
+                    Kaart_Trekken();
+                    kaartAlGetrokken = false;
+                    for (int i = 0; i < 11; i++)
+                    {
+                        if( kaartCode == alGetrokkenSpeler[i])
+                        {
+                            kaartAlGetrokken = true;
+                        }
+                        if (kaartCode == alGetrokkenBank[i])
+                        {
+                            kaartAlGetrokken = true;
+                        }
+
+                    }
+                    
+
+                    
+                }
+                
+
+
                 if (rndWaarde == 1)
                 {
                     aasSpeler++;
                 }
-                                
-                
+
+                alGetrokkenSpeler[aantalKaartSpeler] = kaartCode;
+                aantalKaartSpeler++;
                 scoreSpeler += kaartScore;                
                 LijstSpeler.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtSScore.Content = scoreSpeler.ToString();
             }
             else if (isSpeler == false)
             {
+                bool kaartAlGetrokken = true;
 
-                Kaart_Trekken();
+                while (kaartAlGetrokken == true)
+                {
+                    Kaart_Trekken();
+                    kaartAlGetrokken= false;
+                    for (int i = 0; i < 11; i++)
+                    {
+                        if (kaartCode == alGetrokkenSpeler[i])
+                        {
+                            kaartAlGetrokken = true;
+                        }
+                        if (kaartCode == alGetrokkenBank[i])
+                        {
+                            kaartAlGetrokken = true;
+                        }
+
+                    }
+
+
+                }
                 if (rndWaarde == 1)
                 {
                     aasBank++;
                 }
-                
+                alGetrokkenBank[aantalKaartBank] = kaartCode;
+                aantalKaartBank++;
                 scoreBank += kaartScore;
                 LijstBank.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtBScore.Content = scoreBank.ToString();
@@ -305,6 +363,7 @@ namespace Project_Blackjack
             //Generatie van kaarttype en -waarde.
             rndType = rnd.Next(0, 4);
             rndWaarde = rnd.Next(1, 14);
+            kaartCode = (rndType * 10) + rndWaarde;
 
             //Interpretatie van type en waarde
             if (rndType == 0)
@@ -447,7 +506,15 @@ namespace Project_Blackjack
                 aasSpeler = 0;
                 aasBank = 0;
                 spelerInzet = 0;
-                
+                for (int i = 0; i < 11; i++)
+                {
+                    alGetrokkenBank[i] = 0;
+                    alGetrokkenSpeler[i] = 0;
+
+                }
+                aantalKaartSpeler = 0;
+                aantalKaartBank = 0;
+
 
             }
             if (spelerBudget < 1)
