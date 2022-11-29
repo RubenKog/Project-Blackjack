@@ -61,6 +61,14 @@ namespace Project_Blackjack
         //Speler of bank een kaart geven?
         bool isSpeler;
 
+        //Kaart geselecteerd
+        bool uitLijstBank = false;
+        bool uitLijstSpeler = false;
+        bool uitAutoLijst = false;
+        int lijstIndex;
+
+
+
         //Gamronde afgelopen?
         bool rondeVoltooid = false;
 
@@ -72,7 +80,7 @@ namespace Project_Blackjack
 
         private async void BtnDeel_Click(object sender, RoutedEventArgs e)
         {
-
+            //Afbeelding_Wijzigen();
 
             //Delen bij start van spel
             if (rondeVoltooid == false)
@@ -282,6 +290,7 @@ namespace Project_Blackjack
             //Updaten van de kaartlijsten en score
             //Bijhouden van aantal getrokken azen
             //Controle of kaart al getrokken is
+            //afbeelding wijzigen
 
 
 
@@ -323,6 +332,8 @@ namespace Project_Blackjack
                 scoreSpeler += kaartScore;                
                 LijstSpeler.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtSScore.Content = scoreSpeler.ToString();
+                
+
             }
             else if (isSpeler == false)
             {
@@ -357,28 +368,30 @@ namespace Project_Blackjack
                 LijstBank.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtBScore.Content = scoreBank.ToString();
             }
+            uitAutoLijst = true;
+            Afbeelding_Wijzigen();
         }
         private void Kaart_Trekken()
         {
             //Generatie van kaarttype en -waarde.
-            rndType = rnd.Next(0, 4);
+            rndType = rnd.Next(1, 5);
             rndWaarde = rnd.Next(1, 14);
-            kaartCode = (rndType * 10) + rndWaarde;
+            kaartCode = (rndType * 100) + rndWaarde;
 
             //Interpretatie van type en waarde
-            if (rndType == 0)
+            if (rndType == 1)
             {
                 kaartType = "Harten";
             }
-            else if (rndType == 1)
+            else if (rndType == 2)
             {
                 kaartType = "Ruiten";
             }
-            else if (rndType == 2)
+            else if (rndType == 3)
             {
                 kaartType = "Schoppen";
             }
-            else if (rndType == 3)
+            else if (rndType == 4)
             {
                 kaartType = "Klaveren";
             }
@@ -536,7 +549,62 @@ namespace Project_Blackjack
             }
         }
 
-        
+        private void LijstSpeler_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LijstSpeler.SelectedIndex > -1)
+            {
+                uitLijstBank = false;
+                uitLijstSpeler = true;
+                lijstIndex = LijstSpeler.SelectedIndex;
+                Afbeelding_Wijzigen();
+                LijstSpeler.SelectedIndex = -1;
+            }
+        }
+
+        private void LijstBank_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LijstBank.SelectedIndex > -1)
+            {
+                uitLijstSpeler = false;
+                uitLijstBank = true;
+                lijstIndex = LijstBank.SelectedIndex;
+                Afbeelding_Wijzigen();
+                LijstBank.SelectedIndex = -1;
+            }
+
+        }
+
+        private void Afbeelding_Wijzigen()
+        {
+            int arrayWaarde = 0;
+            if (uitLijstSpeler == true)
+            {
+                arrayWaarde = alGetrokkenSpeler[lijstIndex];
+                uitLijstSpeler = false;
+
+            }
+            else if (uitLijstBank == true)
+            {
+                arrayWaarde = alGetrokkenBank[lijstIndex];
+                uitLijstBank = false;
+
+            }
+            else if (uitAutoLijst == true)
+            {
+                arrayWaarde = kaartCode;
+                uitAutoLijst = false;
+
+            }
+            
+            BitmapImage ImgeKaart = new BitmapImage();
+            ImgeKaart.BeginInit();
+            ImgeKaart.UriSource = new Uri($"{arrayWaarde}.PNG", UriKind.Relative);
+            ImgeKaart.EndInit();
+            ImgKaart.Source = ImgeKaart;
+            
+
+
+        }
     }
 
 

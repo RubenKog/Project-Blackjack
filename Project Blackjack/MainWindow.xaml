@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_Blackjack"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -26,19 +26,21 @@
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
-            <ListBox SelectionMode="Single" Name="LijstSpeler"  FontSize="13" Background="#FFAEAEAE"/>
+            <ListBox SelectionMode="Single" Name="LijstSpeler"  FontSize="13" Background="#FFAEAEAE" SelectionChanged="LijstSpeler_SelectionChanged"/>
         </DockPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="3" Margin="10,10,10,10">
-            <ListBox SelectionMode="Single" Name="LijstBank" FontSize="13" Background="#FFAEAEAE"/>
+            <ListBox SelectionMode="Single" Name="LijstBank" FontSize="13" Background="#FFAEAEAE" SelectionChanged="LijstBank_SelectionChanged"/>
         </DockPanel>
         <Label Name="TxtGeld" Content="" Grid.Column="0" Grid.Row="2" FontFamily="Old English Text MT" FontSize="20" />
         <Label Grid.Row="0" Grid.Column="0" Content="Speler" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Grid.Row="0" Grid.Column="2" Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Name="TxtSScore" Grid.Row="3" Grid.Column="0" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Name="TxtBScore" Grid.Row="3" Grid.Column="2" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
-        <Label Name="TxtStatus" Grid.Row="3" Grid.Column="1" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
-        <Image Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+        <StackPanel Grid.Row="2" Grid.Column="1">
+        <Label Name="TxtStatus" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
+        <Image Name="ImgKaart" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="135" Width="102"/>
+        </StackPanel>
         <CheckBox Name="BtnKapitaal" Grid.Column="0" Grid.Row="2" Content="Custom Startkapitaal" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnKapitaal_Used" Unchecked="BtnKapitaal_Used"/>
 
     </Grid>

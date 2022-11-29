@@ -95,5 +95,62 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Kaarten\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="101.png" />
+    <Resource Include="102.png" />
+    <Resource Include="103.png" />
+    <Resource Include="104.png" />
+    <Resource Include="105.png" />
+    <Resource Include="106.png" />
+    <Resource Include="107.png" />
+    <Resource Include="108.png" />
+    <Resource Include="109.png" />
+    <Resource Include="110.png" />
+    <Resource Include="111.png" />
+    <Resource Include="112.png" />
+    <Resource Include="113.png" />
+    <Resource Include="201.png" />
+    <Resource Include="202.png" />
+    <Resource Include="203.png" />
+    <Resource Include="204.png" />
+    <Resource Include="205.png" />
+    <Resource Include="206.png" />
+    <Resource Include="207.png" />
+    <Resource Include="208.png" />
+    <Resource Include="209.png" />
+    <Resource Include="210.png" />
+    <Resource Include="211.png" />
+    <Resource Include="212.png" />
+    <Resource Include="213.png" />
+    <Resource Include="301.png" />
+    <Resource Include="302.png" />
+    <Resource Include="303.png" />
+    <Resource Include="304.png" />
+    <Resource Include="305.png" />
+    <Resource Include="306.png" />
+    <Resource Include="307.png" />
+    <Resource Include="308.png" />
+    <Resource Include="309.png" />
+    <Resource Include="310.png" />
+    <Resource Include="311.png" />
+    <Resource Include="312.png" />
+    <Resource Include="313.png" />
+    <Resource Include="401.png" />
+    <Resource Include="402.png" />
+    <Resource Include="403.png" />
+    <Resource Include="404.png" />
+    <Resource Include="405.png" />
+    <Resource Include="406.png" />
+    <Resource Include="407.png" />
+    <Resource Include="408.png" />
+    <Resource Include="409.png" />
+    <Resource Include="410.png" />
+    <Resource Include="411.png" />
+    <Resource Include="412.png" />
+    <Resource Include="413.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
