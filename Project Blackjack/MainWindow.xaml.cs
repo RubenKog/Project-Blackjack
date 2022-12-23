@@ -46,6 +46,7 @@ namespace Project_Blackjack
         //Arrays: 
         int[] alGetrokkenSpeler = new int[11];
         int[] alGetrokkenBank = new int[11];
+        int[] alGetrokkenGame = new int[52];
 
         //Kapitaal (Inzet en budget)
         bool customKapitaal = false;
@@ -155,6 +156,18 @@ namespace Project_Blackjack
             if (scoreSpeler == 21)
             {
                 Game_Einde();
+            }
+            if (scoreSpeler != 21 && scoreBank == 21 && BankVerborgenKaart == true)
+            {
+                BankVerborgenKaart = false;
+                LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
+                TxtBScore.Content = scoreBank.ToString();                
+                Drankje = true;
+                Afbeelding_Wijzigen();
+                MessageBox.Show($"De bank behaalde een BlackJack tijdens het delen, als troost krijg je een drankje van het huis.", "Verfrissend!");
+                Game_Einde();
+
+
             }
 
         }       
@@ -315,24 +328,7 @@ namespace Project_Blackjack
 
             if (isSpeler == true)
             {
-                bool kaartAlGetrokken = true;
-
-                while (kaartAlGetrokken == true)
-                {
-                    Kaart_Trekken();
-                    kaartAlGetrokken = false;
-                    for (int i = 0; i < 11; i++)
-                    {
-                        if( kaartCode == alGetrokkenSpeler[i])
-                        {
-                            kaartAlGetrokken = true;
-                        }
-                        if (kaartCode == alGetrokkenBank[i])
-                        {
-                            kaartAlGetrokken = true;
-                        }
-                    }                  
-                }    
+                Kaart_Controleren();
                 if (rndWaarde == 1)
                 {
                     aasSpeler++;
@@ -348,27 +344,7 @@ namespace Project_Blackjack
             }
             else if (isSpeler == false)
             {
-                bool kaartAlGetrokken = true;
-
-                while (kaartAlGetrokken == true)
-                {
-                    Kaart_Trekken();
-                    kaartAlGetrokken= false;
-                    for (int i = 0; i < 11; i++)
-                    {
-                        if (kaartCode == alGetrokkenSpeler[i])
-                        {
-                            kaartAlGetrokken = true;
-                        }
-                        if (kaartCode == alGetrokkenBank[i])
-                        {
-                            kaartAlGetrokken = true;
-                        }
-
-                    }
-
-
-                }
+                Kaart_Controleren();
                 if (rndWaarde == 1)
                 {
                     aasBank++;
@@ -387,22 +363,39 @@ namespace Project_Blackjack
             {
                 Afbeelding_Wijzigen();
             }
-            if (scoreBank == 21 && BankVerborgenKaart == true)
-            {
-                BankVerborgenKaart = false;
-                LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
-                TxtBScore.Content = scoreBank.ToString();
-                Afbeelding_Wijzigen();
-                Game_Einde();
-
-
-            }
+            
         }
+
+        private void Kaart_Controleren()
+        {
+            bool kaartAlGetrokken = true;
+
+            while (kaartAlGetrokken == true)
+            {
+                Kaart_Trekken();
+                kaartAlGetrokken = false;
+                for (int i = 0; i < 11; i++)
+                {
+                    if (kaartCode == alGetrokkenSpeler[i])
+                    {
+                        kaartAlGetrokken = true;
+                    }
+                    if (kaartCode == alGetrokkenBank[i])
+                    {
+                        kaartAlGetrokken = true;
+                    }
+                }
+            }
+
+
+        }
+
+
         private void Kaart_Trekken()
         {
             //Generatie van kaarttype en -waarde.
-            rndType = rnd.Next(1, 5);
-            rndWaarde = rnd.Next(1, 14);
+            rndType = rnd.Next(1, 2);
+            rndWaarde = rnd.Next(1, 11);
             kaartCode = (rndType * 100) + rndWaarde;
 
             //Interpretatie van type en waarde
@@ -500,6 +493,7 @@ namespace Project_Blackjack
             }
             else if (scoreSpeler == 21)
             {
+                MessageBox.Show($"Je bahaalde een BlackJack!", "BlackJack!");
                 Game_Gewonnen();
             }
 
@@ -542,6 +536,8 @@ namespace Project_Blackjack
             if (rondeVoltooid == true)
             {
                 AutoCardRotated = false;
+                BankVerborgenKaart = false;
+                
                 TxtStatus.Foreground = Brushes.Black  ;
                 TxtStatus.Content = "";
                 TxtBScore.Content = "";
@@ -551,7 +547,7 @@ namespace Project_Blackjack
                 LijstBank.Items.Clear();
                 LijstSpeler.Items.Clear();                
                 aasSpeler = 0;
-                aasBank = 0;
+                aasBank = 0;                
                 spelerInzet = 0;
                 for (int i = 0; i < 11; i++)
                 {
