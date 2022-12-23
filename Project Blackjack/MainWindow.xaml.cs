@@ -15,7 +15,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Windows.Media;
 using System.Media;
 
 namespace Project_Blackjack
@@ -38,6 +37,7 @@ namespace Project_Blackjack
         string VerborgenWaarde;
         int aantalKaartSpeler = 0;
         int aantalKaartBank = 0;
+        int aantalKaartTotaal = 0;
 
         string kaartType;
         string kaartWaarde;
@@ -354,8 +354,11 @@ namespace Project_Blackjack
 
                 alGetrokkenSpeler[aantalKaartSpeler] = kaartCode;
                 aantalKaartSpeler++;
+                alGetrokkenGame[aantalKaartTotaal] = kaartCode;
+                aantalKaartTotaal++;
                 scoreSpeler += kaartScore;                
                 LijstSpeler.Items.Add($"{kaartType} {kaartWaarde}");
+                TxtAantalKaarten.Content = $"Aantal kaarten over: {52- aantalKaartTotaal}";
                 TxtSScore.Content = scoreSpeler.ToString();
                 
 
@@ -369,6 +372,9 @@ namespace Project_Blackjack
                 }
                 alGetrokkenBank[aantalKaartBank] = kaartCode;
                 aantalKaartBank++;
+                alGetrokkenGame[aantalKaartTotaal] = kaartCode;
+                TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}";
+                aantalKaartTotaal++;
                 scoreBank += kaartScore;
                 if (BankVerborgenKaart == false)
                 {                    
@@ -403,6 +409,13 @@ namespace Project_Blackjack
                         kaartAlGetrokken = true;
                     }
                 }
+                foreach( int waarde in alGetrokkenGame)
+                {
+                    if (kaartCode == waarde)
+                    {
+                        kaartAlGetrokken = true;
+                    }
+                }
             }
 
 
@@ -411,9 +424,20 @@ namespace Project_Blackjack
 
         private void Kaart_Trekken()
         {
+            if (aantalKaartTotaal ==52)
+            {
+                alGetrokkenGame[aantalKaartTotaal] = kaartCode;
+                Drankje = true;
+                Afbeelding_Wijzigen();
+                MessageBox.Show("Alle kaarten zijn gespeeld. Het deck wordt opnieuw geshuffled. Eventuele kaarten al op de tafel blijven daar tot het einde van de ronde. Geniet ondertussen van een drankje.", "Shuffle ");
+                Array.Clear(alGetrokkenGame, 0, alGetrokkenGame.Length);
+                aantalKaartTotaal = 0;
+
+
+            }
             //Generatie van kaarttype en -waarde.
             rndType = rnd.Next(1, 5);
-            rndWaarde = rnd.Next(1, 11);
+            rndWaarde = rnd.Next(1, 14);
             kaartCode = (rndType * 100) + rndWaarde;
 
             //Interpretatie van type en waarde

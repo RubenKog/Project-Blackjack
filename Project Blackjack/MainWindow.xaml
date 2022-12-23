@@ -33,7 +33,10 @@
         <DockPanel Grid.Row="1" Grid.Column="3" Margin="10,10,10,10">
             <ListBox SelectionMode="Single" Name="LijstBank" FontSize="13" Background="#FFAEAEAE" SelectionChanged="LijstBank_SelectionChanged"/>
         </DockPanel>
-        <Label Name="TxtGeld" Content="" Grid.Column="0" Grid.Row="2" FontFamily="Old English Text MT" FontSize="20" />
+        <StackPanel Grid.Column="0" Grid.Row="2">
+        <Label Name="TxtGeld" Content="Budget: ---"  FontFamily="Old English Text MT" FontSize="20" />
+        <Label Name="TxtAantalKaarten" Content="Aantal Kaarten in spel: 52" Grid.Column="0" Grid.Row="2" FontFamily="Old English Text MT" FontSize="20" />
+        </StackPanel>
         <Label Grid.Row="0" Grid.Column="0" Content="Speler" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Grid.Row="0" Grid.Column="2" Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <Label Name="TxtSScore" Grid.Row="3" Grid.Column="0" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
