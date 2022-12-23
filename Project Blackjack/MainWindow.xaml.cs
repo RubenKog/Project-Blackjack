@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Media;
+using System.Media;
 
 namespace Project_Blackjack
 {
@@ -26,7 +27,7 @@ namespace Project_Blackjack
     {
         //GLobale declaraties:
 
-        
+
         //Nodig voor kaartgeneratie:
         //kaartCode is nodig voor identificatie in afbeeldingen en arrays.
         Random rnd = new Random();
@@ -40,8 +41,8 @@ namespace Project_Blackjack
 
         string kaartType;
         string kaartWaarde;
-        
-        
+
+
 
         //Arrays: 
         int[] alGetrokkenSpeler = new int[11];
@@ -52,7 +53,7 @@ namespace Project_Blackjack
         bool customKapitaal = false;
         float spelerInzet;
         float spelerBudget = 0;
-        
+
         //Score bijhouden
         int kaartScore;
         int scoreSpeler = 0;
@@ -75,8 +76,9 @@ namespace Project_Blackjack
         bool DraaiKaart = false;
         bool Drankje = false;
 
+        SoundPlayer musicPlayer = new SoundPlayer(Properties.Resources.Music1);
 
-
+        bool MusicPlaying = false;
 
         //Gamronde afgelopen?
         bool rondeVoltooid = false;
@@ -84,7 +86,7 @@ namespace Project_Blackjack
         public MainWindow()
         {
             InitializeComponent();
-            
+
         }
 
         private async void BtnDeel_Click(object sender, RoutedEventArgs e)
@@ -118,8 +120,8 @@ namespace Project_Blackjack
                 DraaiKaart = false;
                 BtnDeel.IsEnabled = false;
 
-                isSpeler = true;                
-                Geef_Kaart();                
+                isSpeler = true;
+                Geef_Kaart();
                 await Task.Delay(500);
                 Geef_Kaart();
                 while (scoreSpeler > 21 && aasSpeler > 0)
@@ -131,7 +133,7 @@ namespace Project_Blackjack
 
                 TxtSScore.Content = scoreSpeler.ToString();
                 await Task.Delay(500);
-                isSpeler = false;               
+                isSpeler = false;
                 Geef_Kaart();
                 BankVerborgenKaart = true;
                 Geef_Kaart();
@@ -142,15 +144,15 @@ namespace Project_Blackjack
                     BtnDubbel.IsEnabled = true;
                 }
 
-                
+
 
             }
             //Deelknop is resetknop bij einde van het spel
-            if (rondeVoltooid==true)
+            if (rondeVoltooid == true)
             {
                 Gameronde_Reset();
                 BtnDeel.Content = "Delen";
-                rondeVoltooid=false;
+                rondeVoltooid = false;
             }
             //Indien speler wint met de eerste 2 kaarten moet dit onmiddelijk herkend worden
             if (scoreSpeler == 21)
@@ -161,7 +163,7 @@ namespace Project_Blackjack
             {
                 BankVerborgenKaart = false;
                 LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
-                TxtBScore.Content = scoreBank.ToString();                
+                TxtBScore.Content = scoreBank.ToString();
                 Drankje = true;
                 Afbeelding_Wijzigen();
                 MessageBox.Show($"De bank behaalde een BlackJack tijdens het delen, als troost krijg je een drankje van het huis.", "Verfrissend!");
@@ -170,7 +172,7 @@ namespace Project_Blackjack
 
             }
 
-        }       
+        }
         private async void BtnHit_Click(object sender, RoutedEventArgs e)
         {
             BtnHit.IsEnabled = false;
@@ -178,9 +180,9 @@ namespace Project_Blackjack
             BtnDubbel.IsEnabled = false;
             isSpeler = true;
             await Task.Delay(250);
-            Geef_Kaart();     
-            
-            while (scoreSpeler > 21 && aasSpeler >0)
+            Geef_Kaart();
+
+            while (scoreSpeler > 21 && aasSpeler > 0)
             {
                 scoreSpeler -= 10;
                 aasSpeler--;
@@ -194,7 +196,7 @@ namespace Project_Blackjack
                 Game_Einde();
             }
 
-            
+
         }
         private async void BtnStand_Click(object sender, RoutedEventArgs e)
         {
@@ -217,7 +219,7 @@ namespace Project_Blackjack
                 while (scoreBank < 17)
                 {
                     await Task.Delay(500);
-                    Geef_Kaart(); 
+                    Geef_Kaart();
                 }
 
                 while (scoreBank > 21 && aasBank > 0)
@@ -228,20 +230,36 @@ namespace Project_Blackjack
                 }
                 TxtBScore.Content = scoreBank.ToString();
                 if (scoreBank >= 17)
-                { 
-                geefAanBank=false;
+                {
+                    geefAanBank = false;
                 }
-                    
 
-                
+
+
             }
 
             if (scoreBank >= 17)
             {
                 Game_Einde();
             }
-            
+
         }
+        private void BtnMusic_Used(object sender, RoutedEventArgs e)
+        {
+            if (MusicPlaying == false)
+            {
+                musicPlayer.Play();
+                MusicPlaying = true;
+            }
+            else
+            {
+                musicPlayer.Stop();
+                MusicPlaying=false;
+            }
+        }
+        
+       
+
         private void BtnKapitaal_Used(object sender, RoutedEventArgs e)
         {
             if (customKapitaal == true)
@@ -394,7 +412,7 @@ namespace Project_Blackjack
         private void Kaart_Trekken()
         {
             //Generatie van kaarttype en -waarde.
-            rndType = rnd.Next(1, 2);
+            rndType = rnd.Next(1, 5);
             rndWaarde = rnd.Next(1, 11);
             kaartCode = (rndType * 100) + rndWaarde;
 
