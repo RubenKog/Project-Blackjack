@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Windows.Media;
 
 namespace Project_Blackjack
 {
@@ -32,6 +33,8 @@ namespace Project_Blackjack
         int rndType;
         int rndWaarde;
         int kaartCode;
+        string VerborgenType;
+        string VerborgenWaarde;
         int aantalKaartSpeler = 0;
         int aantalKaartBank = 0;
 
@@ -59,13 +62,18 @@ namespace Project_Blackjack
         int aasBank = 0;
 
         //Speler of bank een kaart geven?
-        bool isSpeler;
+        bool isSpeler = true;
 
         //Kaart geselecteerd
         bool uitLijstBank = false;
         bool uitLijstSpeler = false;
         bool uitAutoLijst = false;
         int lijstIndex;
+        bool BankVerborgenKaart = false;
+        bool AutoCardRotated = false;
+        bool DraaiKaart = false;
+        bool Drankje = false;
+
 
 
 
@@ -106,6 +114,7 @@ namespace Project_Blackjack
                 Inzet();
 
                 //Start delen
+                DraaiKaart = false;
                 BtnDeel.IsEnabled = false;
 
                 isSpeler = true;                
@@ -123,8 +132,14 @@ namespace Project_Blackjack
                 await Task.Delay(500);
                 isSpeler = false;               
                 Geef_Kaart();
+                BankVerborgenKaart = true;
+                Geef_Kaart();
                 BtnHit.IsEnabled = true;
                 BtnStand.IsEnabled = true;
+                if (spelerBudget >= (spelerInzet))
+                {
+                    BtnDubbel.IsEnabled = true;
+                }
 
                 
 
@@ -147,6 +162,7 @@ namespace Project_Blackjack
         {
             BtnHit.IsEnabled = false;
             BtnStand.IsEnabled = false;
+            BtnDubbel.IsEnabled = false;
             isSpeler = true;
             await Task.Delay(250);
             Geef_Kaart();     
@@ -171,12 +187,20 @@ namespace Project_Blackjack
         {
             BtnStand.IsEnabled = false;
             BtnHit.IsEnabled = false;
+            BtnDubbel.IsEnabled = false;
             isSpeler = false;
             //GeefAanBank is noodzakelijk: Anders stopt bank met kaarten krijgen na overschrijden van 21 met een aas in bezit
             bool geefAanBank = true;
             while (geefAanBank == true)
             {
+                if (BankVerborgenKaart == true)
+                {
+                    BankVerborgenKaart = false;
+                    LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
+                    TxtBScore.Content = scoreBank.ToString();
+                    Afbeelding_Wijzigen();
 
+                }
                 while (scoreBank < 17)
                 {
                     await Task.Delay(500);
@@ -215,7 +239,6 @@ namespace Project_Blackjack
             {
                 customKapitaal = true;
             }
-
         }
         private void Start_Kapitaal()
         {
@@ -232,10 +255,7 @@ namespace Project_Blackjack
                 {
                     MessageBox.Show("Je budget moet groter zijn dan 0", "Foutieve invoer");
                     BudgetOK = false;
-
-                }
-
-                
+                }                
             }
             if (spelerBudget >= 1)
             {
@@ -245,8 +265,9 @@ namespace Project_Blackjack
             {
                 MessageBox.Show($"Je hebt een lekker drankje gekocht met je ${spelerBudget} want dit was te laag om in te zetten", "Verfrissend!");
                 spelerBudget = 0;
+                Drankje = true;
+                Afbeelding_Wijzigen();
             }
-
         }
         private void Inzet()
         {
@@ -275,9 +296,6 @@ namespace Project_Blackjack
                     MessageBox.Show($"Je inzet is maar ${spelerInzet}, je moet minstens ${Math.Ceiling(spelerBudget / 10)} inzetten om te spelen", "Foutieve invoer");
                     InzetOK = false;
                 }
-
-
-
             }
 
             spelerInzet = Convert.ToSingle(Math.Ceiling(spelerInzet));
@@ -313,15 +331,8 @@ namespace Project_Blackjack
                         {
                             kaartAlGetrokken = true;
                         }
-
-                    }
-                    
-
-                    
-                }
-                
-
-
+                    }                  
+                }    
                 if (rndWaarde == 1)
                 {
                     aasSpeler++;
@@ -365,11 +376,27 @@ namespace Project_Blackjack
                 alGetrokkenBank[aantalKaartBank] = kaartCode;
                 aantalKaartBank++;
                 scoreBank += kaartScore;
-                LijstBank.Items.Add($"{kaartType} {kaartWaarde}");
-                TxtBScore.Content = scoreBank.ToString();
+                if (BankVerborgenKaart == false)
+                {                    
+                    LijstBank.Items.Add($"{kaartType} {kaartWaarde}");
+                    TxtBScore.Content = scoreBank.ToString();
+                }
             }
             uitAutoLijst = true;
-            Afbeelding_Wijzigen();
+            if (BankVerborgenKaart == false)
+            {
+                Afbeelding_Wijzigen();
+            }
+            if (scoreBank == 21 && BankVerborgenKaart == true)
+            {
+                BankVerborgenKaart = false;
+                LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
+                TxtBScore.Content = scoreBank.ToString();
+                Afbeelding_Wijzigen();
+                Game_Einde();
+
+
+            }
         }
         private void Kaart_Trekken()
         {
@@ -426,6 +453,12 @@ namespace Project_Blackjack
                     kaartScore = 10;
                     kaartWaarde = "koning (10)";
                 }
+
+            }
+            if (BankVerborgenKaart == true && isSpeler == false)
+            {
+                VerborgenType = kaartType;
+                VerborgenWaarde = kaartWaarde;
 
             }
 
@@ -508,6 +541,7 @@ namespace Project_Blackjack
         {
             if (rondeVoltooid == true)
             {
+                AutoCardRotated = false;
                 TxtStatus.Foreground = Brushes.Black  ;
                 TxtStatus.Content = "";
                 TxtBScore.Content = "";
@@ -534,14 +568,20 @@ namespace Project_Blackjack
             {
                 if (spelerBudget == 0) 
                 {
+                    Drankje = true;
+                    Afbeelding_Wijzigen();
                     MessageBox.Show($"Je hebt helaas geen geld meer, maar je krijgt een drankje van het huis!", "Verfrissend!");
                     TxtGeld.Content = $"Budget = {spelerBudget}";
+                    
                 }
                 if (spelerBudget > 0)
                 {
+                    Drankje = true;
+                    Afbeelding_Wijzigen();
                     MessageBox.Show($"Je hebt nog maar ${spelerBudget} over. Te weinig om verder te spelen. Gelukkig zijn de drankjes goedkoop.", "Verfrissend!");
                     spelerBudget = 0;
                     TxtGeld.Content = $"Budget = {spelerBudget}";
+                    
                 }
                     
                     
@@ -576,34 +616,106 @@ namespace Project_Blackjack
 
         private void Afbeelding_Wijzigen()
         {
+            
             int arrayWaarde = 0;
+            bool rotatieKaart = false;
             if (uitLijstSpeler == true)
             {
                 arrayWaarde = alGetrokkenSpeler[lijstIndex];
                 uitLijstSpeler = false;
+                if (lijstIndex == 2 && DraaiKaart == true)
+                {
+                    rotatieKaart = true;
+                }
 
             }
             else if (uitLijstBank == true)
             {
                 arrayWaarde = alGetrokkenBank[lijstIndex];
                 uitLijstBank = false;
+                rotatieKaart = false;
 
             }
             else if (uitAutoLijst == true)
             {
                 arrayWaarde = kaartCode;
                 uitAutoLijst = false;
+                if (DraaiKaart == true && AutoCardRotated == false)
+                {
+                    rotatieKaart = true;
+                    AutoCardRotated = true;
+                }
 
             }
-            
-            BitmapImage ImgeKaart = new BitmapImage();
-            ImgeKaart.BeginInit();
-            ImgeKaart.UriSource = new Uri($"{arrayWaarde}.PNG", UriKind.Relative);
-            ImgeKaart.EndInit();
-            ImgKaart.Source = ImgeKaart;
+
+            if (rotatieKaart)
+            {
+                BitmapImage RotatedKaart = new BitmapImage();
+                RotatedKaart.BeginInit();
+                RotatedKaart.UriSource = new Uri($"{arrayWaarde}.PNG", UriKind.Relative);
+                RotatedKaart.Rotation = Rotation.Rotate270;
+                RotatedKaart.EndInit();
+                ImgKaart.Source = RotatedKaart;
+
+            }
+            else
+            {
+                BitmapImage NormalKaart = new BitmapImage();
+                NormalKaart.BeginInit();
+                NormalKaart.UriSource = new Uri($"{arrayWaarde}.PNG", UriKind.Relative);
+                NormalKaart.EndInit();
+                ImgKaart.Source = NormalKaart;
+            }
+
+            if(Drankje)
+            {
+                arrayWaarde = rnd.Next(501, 514);
+
+                BitmapImage DrankjeKaart = new BitmapImage();
+                DrankjeKaart.BeginInit();
+                DrankjeKaart.UriSource = new Uri($"{arrayWaarde}.PNG", UriKind.Relative);
+                DrankjeKaart.EndInit();
+                ImgKaart.Source = DrankjeKaart;
+                Drankje = false;
+
+            }
+
             
 
 
+        }
+
+        private void BtnDubbel_Click(object sender, RoutedEventArgs e)
+        {
+            spelerBudget -= spelerInzet;
+            spelerInzet *= 2;
+            BtnHit.IsEnabled = false;
+            BtnStand.IsEnabled = false;
+            BtnDubbel.IsEnabled = false;
+            DraaiKaart = true;
+            
+            isSpeler = true;
+
+            Geef_Kaart();
+
+            while (scoreSpeler > 21 && aasSpeler > 0)
+            {
+                scoreSpeler -= 10;
+                aasSpeler--;
+
+            }
+            TxtSScore.Content = scoreSpeler.ToString();
+            BtnHit.IsEnabled = true;
+            BtnStand.IsEnabled = true;
+
+            if (scoreSpeler >= 21)
+            {
+                Game_Einde();
+            }
+            else
+            {
+                BtnStand_Click(sender, e);
+            }
         }
     }
 

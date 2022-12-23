@@ -21,7 +21,8 @@
         <StackPanel Width="200" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button IsEnabled="True" Name="BtnDeel" Content="Delen" Margin="0,0,0,60" Height="40" Click="BtnDeel_Click"/>
             <Button IsEnabled="False" Name="BtnHit" Content="Hit" Margin="0,0,0,60" Height="40" Click="BtnHit_Click"/>
-            <Button IsEnabled="False" Name="BtnStand" Content="Stand" Height="40" Click="BtnStand_Click" />
+            <Button IsEnabled="False" Name="BtnStand" Content="Stand" Height="40" Margin="0,0,0,60" Click="BtnStand_Click" />
+            <Button IsEnabled="False" Name="BtnDubbel" Content="Dubbel" Height="40" Click="BtnDubbel_Click" />
 
         </StackPanel>
 
@@ -39,9 +40,10 @@
         <Label Name="TxtBScore" Grid.Row="3" Grid.Column="2" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
         <StackPanel Grid.Row="2" Grid.Column="1">
         <Label Name="TxtStatus" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Old English Text MT" FontSize="30" FontWeight="Bold"/>
-        <Image Name="ImgKaart" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="135" Width="102"/>
+        <Image Name="ImgKaart" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="200" Width="auto" />
         </StackPanel>
         <CheckBox Name="BtnKapitaal" Grid.Column="0" Grid.Row="2" Content="Custom Startkapitaal" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnKapitaal_Used" Unchecked="BtnKapitaal_Used"/>
+        <MediaElement Grid.Column="2" HorizontalAlignment="Left" Height="100" Margin="57,154,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 
