@@ -83,6 +83,11 @@ namespace Project_Blackjack
         //Gamronde afgelopen?
         bool rondeVoltooid = false;
 
+
+
+
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -246,6 +251,8 @@ namespace Project_Blackjack
         }
         private void BtnMusic_Used(object sender, RoutedEventArgs e)
         {
+            Drankje = true;
+            Afbeelding_Wijzigen();
             if (MusicPlaying == false)
             {
                 musicPlayer.Play();
@@ -426,9 +433,10 @@ namespace Project_Blackjack
         {
             if (aantalKaartTotaal ==52)
             {
-                alGetrokkenGame[aantalKaartTotaal] = kaartCode;
+                
                 Drankje = true;
                 Afbeelding_Wijzigen();
+                TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}"
                 MessageBox.Show("Alle kaarten zijn gespeeld. Het deck wordt opnieuw geshuffled. Eventuele kaarten al op de tafel blijven daar tot het einde van de ronde. Geniet ondertussen van een drankje.", "Shuffle ");
                 Array.Clear(alGetrokkenGame, 0, alGetrokkenGame.Length);
                 aantalKaartTotaal = 0;
@@ -535,7 +543,7 @@ namespace Project_Blackjack
             }
             else if (scoreSpeler == 21)
             {
-                MessageBox.Show($"Je bahaalde een BlackJack!", "BlackJack!");
+                MessageBox.Show($"Je behaalde een BlackJack!", "BlackJack!");
                 Game_Gewonnen();
             }
 
