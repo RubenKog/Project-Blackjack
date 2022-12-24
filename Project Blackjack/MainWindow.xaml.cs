@@ -436,7 +436,7 @@ namespace Project_Blackjack
                 
                 Drankje = true;
                 Afbeelding_Wijzigen();
-                TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}"
+                TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}";
                 MessageBox.Show("Alle kaarten zijn gespeeld. Het deck wordt opnieuw geshuffled. Eventuele kaarten al op de tafel blijven daar tot het einde van de ronde. Geniet ondertussen van een drankje.", "Shuffle ");
                 Array.Clear(alGetrokkenGame, 0, alGetrokkenGame.Length);
                 aantalKaartTotaal = 0;
