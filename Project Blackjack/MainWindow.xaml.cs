@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Media;
+using System.Reflection;
 
 namespace Project_Blackjack
 {
@@ -76,9 +77,13 @@ namespace Project_Blackjack
         bool DraaiKaart = false;
         bool Drankje = false;
 
+        //Muziek
         SoundPlayer musicPlayer = new SoundPlayer(Properties.Resources.Music1);
-
         bool MusicPlaying = false;
+
+        //Klok
+        private DispatcherTimer klok = new DispatcherTimer();
+
 
         //Gamronde afgelopen?
         bool rondeVoltooid = false;
@@ -91,6 +96,17 @@ namespace Project_Blackjack
         public MainWindow()
         {
             InitializeComponent();
+            klok.Tick += new EventHandler(Klok_Ticked);
+            klok.Interval = new TimeSpan(0, 0, 1); 
+            klok.Start(); 
+
+
+        }
+
+        private void Klok_Ticked(object sender, EventArgs e) 
+        {
+            TxtKlok.Content = $"Tijd: {DateTime.Now.ToLongTimeString()}";
+
 
         }
 
@@ -141,6 +157,7 @@ namespace Project_Blackjack
                 isSpeler = false;
                 Geef_Kaart();
                 BankVerborgenKaart = true;
+                await Task.Delay(500);
                 Geef_Kaart();
                 BtnHit.IsEnabled = true;
                 BtnStand.IsEnabled = true;
@@ -162,12 +179,16 @@ namespace Project_Blackjack
             //Indien speler wint met de eerste 2 kaarten moet dit onmiddelijk herkend worden
             if (scoreSpeler == 21)
             {
+                BankVerborgenKaart = false;
+                LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
+                TxtBScore.Content = scoreBank.ToString();
+                LijstBank.SelectedIndex = 1;
                 Game_Einde();
             }
             if (scoreSpeler != 21 && scoreBank == 21 && BankVerborgenKaart == true)
             {
                 BankVerborgenKaart = false;
-                LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
+                LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
                 TxtBScore.Content = scoreBank.ToString();
                 Drankje = true;
                 Afbeelding_Wijzigen();
@@ -194,11 +215,20 @@ namespace Project_Blackjack
 
             }
             TxtSScore.Content = scoreSpeler.ToString();
-            BtnHit.IsEnabled = true;
-            BtnStand.IsEnabled = true;
+            
             if (scoreSpeler >= 21)
             {
+                await Task.Delay(500);
+                BankVerborgenKaart = false;
+                LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
+                TxtBScore.Content = scoreBank.ToString();
+                LijstBank.SelectedIndex = 1;
                 Game_Einde();
+            }
+            else
+            {
+                BtnHit.IsEnabled = true;
+                BtnStand.IsEnabled = true;
             }
 
 
@@ -215,10 +245,12 @@ namespace Project_Blackjack
             {
                 if (BankVerborgenKaart == true)
                 {
+
                     BankVerborgenKaart = false;
-                    LijstBank.Items.Add($"{VerborgenType} {VerborgenWaarde}");
+                    LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
                     TxtBScore.Content = scoreBank.ToString();
-                    Afbeelding_Wijzigen();
+                    LijstBank.SelectedIndex = 1;
+
 
                 }
                 while (scoreBank < 17)
@@ -255,7 +287,7 @@ namespace Project_Blackjack
             Afbeelding_Wijzigen();
             if (MusicPlaying == false)
             {
-                musicPlayer.Play();
+                musicPlayer.PlayLooping();
                 MusicPlaying = true;
             }
             else
@@ -276,6 +308,10 @@ namespace Project_Blackjack
             else if (customKapitaal == false)
             {
                 customKapitaal = true;
+                if(spelerBudget > 0)
+                {
+                    MessageBox.Show($"Het spel is al bezig. Deze instelling zal activeren bij het starten van een nieuw spel.", "Spel al bezig");
+                }
             }
         }
         private void Start_Kapitaal()
@@ -380,17 +416,23 @@ namespace Project_Blackjack
                 alGetrokkenBank[aantalKaartBank] = kaartCode;
                 aantalKaartBank++;
                 alGetrokkenGame[aantalKaartTotaal] = kaartCode;
-                TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}";
                 aantalKaartTotaal++;
+                TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}";
+                
                 scoreBank += kaartScore;
                 if (BankVerborgenKaart == false)
                 {                    
                     LijstBank.Items.Add($"{kaartType} {kaartWaarde}");
                     TxtBScore.Content = scoreBank.ToString();
                 }
+                else
+                {
+                    LijstBank.Items.Add($"Verborgen");
+
+                }
             }
             uitAutoLijst = true;
-            if (BankVerborgenKaart == false)
+            if (BankVerborgenKaart == false || isSpeler == true || scoreBank >=21 )
             {
                 Afbeelding_Wijzigen();
             }
@@ -440,6 +482,7 @@ namespace Project_Blackjack
                 MessageBox.Show("Alle kaarten zijn gespeeld. Het deck wordt opnieuw geshuffled. Eventuele kaarten al op de tafel blijven daar tot het einde van de ronde. Geniet ondertussen van een drankje.", "Shuffle ");
                 Array.Clear(alGetrokkenGame, 0, alGetrokkenGame.Length);
                 aantalKaartTotaal = 0;
+                
 
 
             }
@@ -511,6 +554,7 @@ namespace Project_Blackjack
         {
             BtnHit.IsEnabled = false;
             BtnStand.IsEnabled = false;
+            BtnDubbel.IsEnabled = false;
             BtnDeel.IsEnabled = true;
             rondeVoltooid = true;
             BtnDeel.Content = "Nieuwe Ronde";
@@ -543,6 +587,7 @@ namespace Project_Blackjack
             }
             else if (scoreSpeler == 21)
             {
+                TxtBScore.Content = scoreBank.ToString(); 
                 MessageBox.Show($"Je behaalde een BlackJack!", "BlackJack!");
                 Game_Gewonnen();
             }
@@ -577,9 +622,11 @@ namespace Project_Blackjack
         }
         private void Game_Push()
         {
+            LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
             TxtStatus.Content = "Push";
             spelerBudget += spelerInzet;
             TxtGeld.Content = $"Budget = {spelerBudget}";
+            
         }
         private void Gameronde_Reset()
         {
@@ -731,7 +778,7 @@ namespace Project_Blackjack
 
         }
 
-        private void BtnDubbel_Click(object sender, RoutedEventArgs e)
+        private async void BtnDubbel_Click(object sender, RoutedEventArgs e)
         {
             spelerBudget -= spelerInzet;
             spelerInzet *= 2;
@@ -753,13 +800,21 @@ namespace Project_Blackjack
             TxtSScore.Content = scoreSpeler.ToString();
             BtnHit.IsEnabled = true;
             BtnStand.IsEnabled = true;
-
+            await Task.Delay(500);
             if (scoreSpeler >= 21)
             {
+
+                LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
+                LijstBank.SelectedIndex = 1;
+
                 Game_Einde();
             }
             else
             {
+                
+                LijstBank.SelectedIndex = 1;
+                TxtBScore.Content = scoreBank.ToString();
+
                 BtnStand_Click(sender, e);
             }
         }
