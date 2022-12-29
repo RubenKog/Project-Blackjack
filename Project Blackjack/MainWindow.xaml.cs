@@ -664,7 +664,7 @@ namespace Project_Blackjack
                 HistoriekList.Reverse();
 
 
-                TxtHistoriek.Content = $"Historiek: {HistoriekTekst}";
+                
 
                 RondeData_Reset();
 
