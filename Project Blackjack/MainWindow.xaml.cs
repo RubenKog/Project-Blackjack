@@ -386,6 +386,12 @@ namespace Project_Blackjack
                     MessageBox.Show($"Je inzet is maar ${spelerInzet}, je moet minstens ${Math.Ceiling(spelerBudget / 10)} inzetten om te spelen.", "Foutieve invoer");
                     InzetOK = false;
                 }
+                if(InzetOK == true && Convert.ToSingle(Math.Ceiling(spelerInzet)) > spelerBudget )
+                {
+                    MessageBox.Show($"Je inzet is (afgerond naar boven) ${Convert.ToSingle(Math.Ceiling(spelerInzet))}, maar je hebt maar ${spelerBudget}.", "Foutieve invoer");
+                    InzetOK = false;
+
+                }
             }
 
             spelerInzet = Convert.ToSingle(Math.Ceiling(spelerInzet));
