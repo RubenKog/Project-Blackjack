@@ -78,7 +78,7 @@ namespace Project_Blackjack
         bool Drankje = false;
 
         //Muziek
-        SoundPlayer musicPlayer = new SoundPlayer(Properties.Resources.Music1);
+        SoundPlayer musicPlayer = new SoundPlayer(Properties.Resources.Music0);
         bool MusicPlaying = false;
 
         //Klok
@@ -422,6 +422,7 @@ namespace Project_Blackjack
                 aantalKaartSpeler++;
                 alGetrokkenGame[aantalKaartTotaal] = kaartCode;
                 aantalKaartTotaal++;
+                KaartStapel_Update();
                 scoreSpeler += kaartScore;
                 LijstSpeler.Items.Add($"{kaartType} {kaartWaarde}");
                 TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}";
@@ -491,11 +492,48 @@ namespace Project_Blackjack
             }
 
 
+
+        }
+
+        private void KaartStapel_Update()
+        {
+            string PileSize = "CardBackgroundFullDeck";
+            
+            if((52 - aantalKaartTotaal) < 2)
+            {
+                PileSize = "CardBackgroundSolo";
+            }
+            else if ((52 - aantalKaartTotaal) < 3)
+            {
+                PileSize = "CardBackgroundDuo";
+            }
+            else if ((52 - aantalKaartTotaal) < 15)
+            {
+                PileSize = "CardBackgroundSmallDeck";
+            }
+            else if ((52 -aantalKaartTotaal) < 35)
+            {
+                PileSize = "CardBackgroundBigDeck";
+            }
+            
+            
+
+                
+            
+
+
+            BitmapImage KaartStapel = new BitmapImage();
+            KaartStapel.BeginInit();
+            KaartStapel.UriSource = new Uri($"{PileSize}.png", UriKind.Relative);
+            KaartStapel.EndInit();
+            ImgKaartStapel.Source = KaartStapel;
+
         }
 
 
         private void Kaart_Trekken()
         {
+
             if (aantalKaartTotaal == 52)
             {
 

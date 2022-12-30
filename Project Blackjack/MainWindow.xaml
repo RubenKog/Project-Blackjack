@@ -19,7 +19,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel  Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin ="5 40 0 40" >
+        <StackPanel  Grid.Row="0" Grid.Column="2" Grid.RowSpan = "4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin ="5"  >
             <Button IsEnabled="True" Name="BtnDeel" Content="Deal Cards" Margin="10" Click="BtnDeel_Click" FontFamily="Arial Black" FontSize="16"/>
             <Button IsEnabled="False" Name="BtnHit" Content="Hit" Margin="10" Click="BtnHit_Click" FontFamily="Arial Black" FontSize="16"/>
             <Button IsEnabled="False" Name="BtnStand" Content="Stand" Margin="10"   Click="BtnStand_Click" FontFamily="Arial Black" FontSize="16" />
@@ -48,23 +48,24 @@
         <StackPanel Grid.Row="0" Grid.Column="1">
             <Label  Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold"/>
             <Label Name="TxtBScore"  Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold"/>
-
         </StackPanel>
 
 
 
         <StackPanel Grid.Row="2" Grid.Column="2">
             <Label Name="TxtStatus" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="25" FontWeight="Bold" />
-            <Image Name="ImgKaart" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="150" Width="auto" />
+            <Image Name="ImgKaart" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="150" Width="auto" Source="CardBackgroundSolo.png"/>
+
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="20">
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0">
             <Label Name="TxtKlok" VerticalAlignment="Center" Content="Tijd:"/>
-            <Label Name="TxtHistoriek" VerticalAlignment="Center" Content="Historiek: .. - .. / .." MouseLeftButtonUp="Historiek_Click"/> 
+            <Label Name="TxtHistoriek" VerticalAlignment="Center" Content="Historiek: .. - .. / .." MouseLeftButtonUp="Historiek_Click"/>
 
 
         </StackPanel>
-        
+        <Image Name="ImgKaartStapel" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"  Height="158" Width="auto" Source="CardBackgroundFullDeck.png" Margin="175,39,0,0" />
+
 
 
     </Grid>

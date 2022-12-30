@@ -197,6 +197,11 @@
     <Resource Include="513.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="CardBackgroundBigDeck.png" />
+    <Resource Include="CardBackgroundDuo.png" />
+    <Resource Include="CardBackgroundFullDeck.png" />
+    <Resource Include="CardBackgroundSmallDeck.png" />
+    <Resource Include="CardBackgroundSolo.png" />
     <Content Include="Music0.wav" />
     <Content Include="Music1.wav" />
   </ItemGroup>
