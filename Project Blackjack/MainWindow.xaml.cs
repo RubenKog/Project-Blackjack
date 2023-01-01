@@ -499,7 +499,7 @@ namespace Project_Blackjack
         {
             string PileSize = "CardBackgroundFullDeck";
             
-            if((52 - aantalKaartTotaal) < 2)
+            if((aantalKaartTotaal) >= 51)
             {
                 PileSize = "CardBackgroundSolo";
             }
@@ -515,11 +515,15 @@ namespace Project_Blackjack
             {
                 PileSize = "CardBackgroundBigDeck";
             }
-            
-            
+            else if ((52 - aantalKaartTotaal) < 45)
+            {
+                PileSize = "CardBackgroundBigDeck";
+            }
 
-                
-            
+
+
+
+
 
 
             BitmapImage KaartStapel = new BitmapImage();
@@ -541,11 +545,9 @@ namespace Project_Blackjack
                 Afbeelding_Wijzigen();
                 TxtAantalKaarten.Content = $"Aantal kaarten over: {52 - aantalKaartTotaal}";
                 MessageBox.Show("Alle kaarten zijn gespeeld. Het deck wordt opnieuw geshuffled. Eventuele kaarten al op de tafel blijven daar tot het einde van de ronde. Geniet ondertussen van een drankje.", "Shuffle ");
-                Array.Clear(alGetrokkenGame, 0, alGetrokkenGame.Length);
-                aantalKaartTotaal = 0;
-
-
-
+                Array.Clear(alGetrokkenGame, 0, alGetrokkenGame.Length);                
+                aantalKaartTotaal = 0;                
+                KaartStapel_Update();
             }
             //Generatie van kaarttype en -waarde.
             rndType = rnd.Next(1, 5);
@@ -743,7 +745,7 @@ namespace Project_Blackjack
             TxtGeld.Content = "Budget: ---";
             TxtAantalKaarten.Content = "Aantal Kaarten in spel: 52";
             BtnHit.IsEnabled = false;
-            BtnReset.IsEnabled = false;
+            BtnReset.IsEnabled = true;
             BtnStand.IsEnabled = false;
             RondeData_Reset();
             RondeBudget = 0;
@@ -762,7 +764,8 @@ namespace Project_Blackjack
             BankVerborgenKaart = false;
             AutoCardRotated = false;
             DraaiKaart = false;
-            Drankje = false;
+            Drankje = true;
+            Afbeelding_Wijzigen();
             rondeVoltooid = false;
             BtnDeel.IsEnabled = true;
 
@@ -893,6 +896,8 @@ namespace Project_Blackjack
                 Drankje = false;
 
             }
+
+
 
 
 

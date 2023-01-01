@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Project_Blackjack"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800">
-    <Grid Background="#FFC9C9C9">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="backgroundmat.png"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
@@ -16,7 +19,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
         <StackPanel  Grid.Row="0" Grid.Column="2" Grid.RowSpan = "4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin ="5"  >
@@ -24,16 +27,16 @@
             <Button IsEnabled="False" Name="BtnHit" Content="Hit" Margin="10" Click="BtnHit_Click" FontFamily="Arial Black" FontSize="16"/>
             <Button IsEnabled="False" Name="BtnStand" Content="Stand" Margin="10"   Click="BtnStand_Click" FontFamily="Arial Black" FontSize="16" />
             <Button IsEnabled="False" Name="BtnDubbel" Content="Double Down" Margin="10"  Click="BtnDubbel_Click" FontFamily="Arial Black" FontSize="16"/>
-            <Button IsEnabled="False" Name="BtnReset" Content="Restart Game" Margin="10"  Click="BtnRestart_Click" FontFamily="Arial Black" FontSize="16"/>
-
+            <Button IsEnabled="True" Name="BtnReset" Content="Restart Game" Margin="10"  Click="BtnRestart_Click" FontFamily="Arial Black" FontSize="16"/>
+            <Label Name="TxtStatus" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="25" FontWeight="Bold" />
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="0" Margin="10,10,10,10">
-            <ListBox SelectionMode="Single" HorizontalContentAlignment="Center" Name="LijstSpeler"  FontSize="13" Background="#FFAEAEAE" SelectionChanged="LijstSpeler_SelectionChanged" FontFamily="Arial Black"/>
+            <ListBox SelectionMode="Single" HorizontalContentAlignment="Center" Name="LijstSpeler"  FontSize="13" Background="#FF24A10D" SelectionChanged="LijstSpeler_SelectionChanged" FontFamily="Arial Black"/>
         </DockPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="1" Margin="10,10,10,10">
-            <ListBox SelectionMode="Single" HorizontalContentAlignment="Center" Name="LijstBank" FontSize="13" Background="#FFAEAEAE" SelectionChanged="LijstBank_SelectionChanged" FontFamily="Arial Black"/>
+            <ListBox SelectionMode="Single" HorizontalContentAlignment="Center" Name="LijstBank" FontSize="13" Background="#FF24A10D" SelectionChanged="LijstBank_SelectionChanged" FontFamily="Arial Black"/>
         </DockPanel>
         <StackPanel Grid.Column="0" Grid.Row="2">
             <Label Name="TxtGeld" Content="Budget: ---"  FontFamily="Arial Black" FontSize="18" />
@@ -52,19 +55,17 @@
 
 
 
-        <StackPanel Grid.Row="2" Grid.Column="2">
-            <Label Name="TxtStatus" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="25" FontWeight="Bold" />
-            <Image Name="ImgKaart" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="150" Width="auto" Source="CardBackgroundSolo.png"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Image Name="ImgKaartStapel"   Height="220" Width="auto" Source="CardBackgroundFullDeck.png" Margin="10 10 10 10" />
+            <Image Name="ImgKaart" Height="203" Width="auto" Source="CardBackgroundSolo.png" HorizontalAlignment="Center" Margin="50,0,0,0"/>
 
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0">
-            <Label Name="TxtKlok" VerticalAlignment="Center" Content="Tijd:"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0" Background="#FF24A10D" >
+            <Label Name="TxtKlok" VerticalAlignment="Center" Content="Tijd: --:--:--"/>
             <Label Name="TxtHistoriek" VerticalAlignment="Center" Content="Historiek: .. - .. / .." MouseLeftButtonUp="Historiek_Click"/>
-
-
         </StackPanel>
-        <Image Name="ImgKaartStapel" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"  Height="158" Width="auto" Source="CardBackgroundFullDeck.png" Margin="175,39,0,0" />
+        
 
 
 
