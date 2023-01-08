@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -204,8 +204,7 @@
     <Resource Include="CardBackgroundSolo.png" />
     <Resource Include="CardBackgroundFullDeck.png" />
     <Resource Include="backgroundmat.png" />
-    <Content Include="Music0.wav" />
-    <Content Include="Music1.wav" />
+    <Content Include="GroovyTower.wav" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

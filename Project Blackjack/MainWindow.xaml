@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_Blackjack"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
+        Title="MainWindow" Height="800" Width="800" Closing="Window_Closing">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="backgroundmat.png"/>
@@ -28,6 +28,7 @@
             <Button IsEnabled="False" Name="BtnStand" Content="Stand" Margin="10"   Click="BtnStand_Click" FontFamily="Arial Black" FontSize="16" />
             <Button IsEnabled="False" Name="BtnDubbel" Content="Double Down" Margin="10"  Click="BtnDubbel_Click" FontFamily="Arial Black" FontSize="16"/>
             <Button IsEnabled="True" Name="BtnReset" Content="Restart Game" Margin="10"  Click="BtnRestart_Click" FontFamily="Arial Black" FontSize="16"/>
+            <Button x:Name="BtnCredits" Content="Credits" Margin="10" FontFamily="Arial Black" FontSize="16" Click="BtnCredits_Click"/>
             <Label Name="TxtStatus" Content="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="25" FontWeight="Bold" />
         </StackPanel>
 
@@ -39,18 +40,19 @@
             <ListBox SelectionMode="Single" HorizontalContentAlignment="Center" Name="LijstBank" FontSize="13" Background="#FF24A10D" SelectionChanged="LijstBank_SelectionChanged" FontFamily="Arial Black"/>
         </DockPanel>
         <StackPanel Grid.Column="0" Grid.Row="2">
-            <Label Name="TxtGeld" Content="Budget: ---"  FontFamily="Arial Black" FontSize="18" />
-            <Label Name="TxtAantalKaarten" Content="Aantal Kaarten in spel: 52" Grid.Column="0" Grid.Row="2" FontFamily="Arial Black" FontSize="18" />
-            <CheckBox Name="BtnKapitaal" Grid.Column="0" Grid.Row="2" Content="Custom Startkapitaal" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnKapitaal_Used" Unchecked="BtnKapitaal_Used" FontFamily="Arial Black"/>
-            <CheckBox IsEnabled="False" Name="BtnMusic" Grid.Column="0" Grid.Row="2" Content="Play Music" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnMusic_Used" Unchecked="BtnMusic_Used" Margin="0 0 0 20" FontFamily="Arial Black"/>
+            <Label Name="TxtGeld" Content="Budget: ---"  FontFamily="Arial Black" FontSize="18" Foreground="#FFDDDDDD" />
+            <Label Name="TxtAantalKaarten" Content="Aantal Kaarten in spel: 52" Grid.Column="0" Grid.Row="2" FontFamily="Arial Black" FontSize="18" Foreground="#FFDDDDDD"/>
+            <CheckBox Name="BtnKapitaal" Grid.Column="0" Grid.Row="2" Content="Custom Startkapitaal" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnKapitaal_Used" Unchecked="BtnKapitaal_Used" FontFamily="Arial Black" Foreground="#FFDDDDDD"/>
+            <CheckBox IsEnabled="True" Name="BtnMusic" Grid.Column="0" Grid.Row="2" Content="Play Music" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsChecked="False" Checked="BtnMusic_Used" Unchecked="BtnMusic_Used" Margin="0 0 0 20" FontFamily="Arial Black" Foreground="#FFDDDDDD"/>
+            <Button x:Name="BtnExit" Content="Exit Game" HorizontalAlignment="Left" FontFamily="Arial Black" FontSize="10" Foreground="#FFDDDDDD" Background="#FF24A10D" Margin="10 0 0 0" Click="BtnExit_Click"/>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="0">
-            <Label  Content="Speler" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold"/>
-            <Label Name="TxtSScore" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold"/>
+            <Label  Content="Speler" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold" Foreground="#FFDDDDDD"/>
+            <Label Name="TxtSScore" Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold" Foreground="#FFDDDDDD"/>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
-            <Label  Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold"/>
-            <Label Name="TxtBScore"  Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold"/>
+            <Label  Content="Bank" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold" Foreground="#FFDDDDDD"/>
+            <Label Name="TxtBScore"  Content="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Black" FontSize="30" FontWeight="Bold" Foreground="#FFDDDDDD"/>
         </StackPanel>
 
 
@@ -62,8 +64,8 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0" Background="#FF24A10D" >
-            <Label Name="TxtKlok" VerticalAlignment="Center" Content="Tijd: --:--:--"/>
-            <Label Name="TxtHistoriek" VerticalAlignment="Center" Content="Historiek: .. - .. / .." MouseLeftButtonUp="Historiek_Click"/>
+            <Label Name="TxtKlok" VerticalAlignment="Center" Content="Tijd: --:--:--" Foreground="#FFDDDDDD"/>
+            <Label Name="TxtHistoriek" VerticalAlignment="Center" Content="Historiek: .. - .. / .." MouseLeftButtonUp="Historiek_Click" Foreground="#FFDDDDDD"/>
         </StackPanel>
         
 

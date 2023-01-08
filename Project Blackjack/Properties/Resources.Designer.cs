@@ -63,18 +63,9 @@ namespace Project_Blackjack.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Music0 {
+        internal static System.IO.UnmanagedMemoryStream GroovyTower {
             get {
-                return ResourceManager.GetStream("Music0", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Music1 {
-            get {
-                return ResourceManager.GetStream("Music1", resourceCulture);
+                return ResourceManager.GetStream("GroovyTower", resourceCulture);
             }
         }
     }
