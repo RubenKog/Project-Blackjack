@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_Blackjack"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800" Closing="Window_Closing">
+        Title="Ruben Kog --- BlackJack Deluxe" Height="800" Width="800" Closing="Window_Closing">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="backgroundmat.png"/>

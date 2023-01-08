@@ -25,10 +25,10 @@ namespace Project_Blackjack
     /// </summary>
     public partial class MainWindow : Window
     {
-        //GLobale declaraties:
+        //Globale declaraties:
 
         //Nodig voor kaartgeneratie:
-        //KaartCode is nodig voor identificatie in afbeeldingen en arrays.
+        //KaartCode is essentieel voor identificatie in afbeeldingen en arrays.
         Random rnd = new Random();
         int RndType;
         int RndWaarde;
@@ -40,7 +40,7 @@ namespace Project_Blackjack
         int AantalKaartTotaal = 0;
         string KaartType;
         string KaartWaarde;
-        //Arrays: 
+        //Arrays met getrokken kaarten: 
         int[] AlGetrokkenSpeler = new int[11];
         int[] AlGetrokkenBank = new int[11];
         int[] AlGetrokkenGame = new int[52];
@@ -521,6 +521,8 @@ namespace Project_Blackjack
         /// <para>Twee willekeurige getallen worden opgeroepen: RndType en RndWaarde. Deze worden geïnterpreteerd en naast elkaar geplaatst om de getrokken kaart te vormen</para>
         /// <para>Kaartcode is de unieke identificatie voor een kaart. Deze wordt gebruikt bij Kaart_Controleren() (kaart mag niet gespeeld worden indien uit deck of op veld) en Afbeelding_Wijzigen()</para>
         /// <para>Verborgen kaarten doorlopen bijna hetzelfde traject als normale kaarten, maar worden ook in VerborgenType en VerborgenWaarde bijgehouden</para>
+        /// 
+        /// <para>Een alternatief voor de vele "if"-statements zou een dictionary zijn. Maar aangezien dit pas laat in het semester werd behandeld en de huidige schrijfmethode duidelijker is bij het zoeken naar fouten werd ervoor gekozen dit niet aan te passen.</para>
         /// </summary>
         private void Kaart_Trekken()
         {
@@ -968,7 +970,7 @@ namespace Project_Blackjack
         private void BtnCredits_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder CreditsSB = new StringBuilder();
-            CreditsSB.AppendLine("PXL 1GRPRO --- Werkplekleren 1 --- Project C#");
+            CreditsSB.AppendLine("PXL 1GRPRO-C --- Werkplekleren 1 --- Project C#");
             CreditsSB.AppendLine("");
             CreditsSB.AppendLine("");
             CreditsSB.AppendLine("Code en design door Ruben Kog");
