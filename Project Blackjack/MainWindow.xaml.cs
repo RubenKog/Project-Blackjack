@@ -284,11 +284,13 @@ namespace Project_Blackjack
             {
                 musicPlayer.PlayLooping();
                 MusicPlaying = true;
+                MessageBox.Show($"Geniet van de muziek en dit gratis drankje!", "Verfrissend!");
             }
             else
             {
                 musicPlayer.Stop();
                 MusicPlaying = false;
+                MessageBox.Show($"Geniet van de stilte en dit gratis drankje!", "Verfrissend!");
             }
             BtnReset.IsEnabled = true;
         }
@@ -756,8 +758,9 @@ namespace Project_Blackjack
             BankVerborgenKaart = false;
             AutoCardRotated = false;
             DraaiKaart = false;
-            Drankje = true;
+            Drankje = true;            
             Afbeelding_Wijzigen();
+            MessageBox.Show($"Geniet dit gratis drankje terwijl we uw spel resetten!", "Verfrissend!");
             rondeVoltooid = false;
             BtnDeel.IsEnabled = true;
         }
