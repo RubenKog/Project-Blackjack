@@ -66,13 +66,14 @@ namespace Project_Blackjack
         bool AutoCardRotated = false;
         bool DraaiKaart = false;
         bool Drankje = false;
+
         //Muziek
-        SoundPlayer musicPlayer = new SoundPlayer(Properties.Resources.GroovyTower);
+        SoundPlayer MusicPlayer = new SoundPlayer(Properties.Resources.GroovyTower);
         bool MusicPlaying = false;
         //Klok
         private DispatcherTimer klok = new DispatcherTimer();
         //Gamronde afgelopen?
-        bool rondeVoltooid = false;
+        bool RondeVoltooid = false;
         //Historiek
         StringBuilder HistoriekSB = new StringBuilder();
         List <string> HistoriekList = new List<string>();
@@ -97,7 +98,7 @@ namespace Project_Blackjack
 
         /// <summary>
         /// <para>BtnDeel_Click controleert of de speler geld heeft om te spelen, vraagt inzet en regelt wie kaarten krijgt.
-        /// async wordt gebruikt om 500 mseconden vertragingen te krijgen met await Task.Delay(500).</para>
+        /// async wordt gebruikt om 1000 mseconden vertragingen te krijgen met await Task.Delay(1000).</para>
         /// <para>Indien de ronde voltooid is wordt de deelknop (en dus ook deze method) gebruikt
         /// om het veld vrij te maken en de ronde te resetten</para>
         /// </summary>
@@ -106,7 +107,7 @@ namespace Project_Blackjack
         { 
             BtnReset.IsEnabled = false;
             //Delen bij start van spel
-            if (rondeVoltooid == false)
+            if (RondeVoltooid == false)
             {
                 //Indien budget = 0, geef nieuw budget
                 while (SpelerBudget == 0)
@@ -131,7 +132,7 @@ namespace Project_Blackjack
                 RondeCounter++;
                 IsSpeler = true;
                 Geef_Kaart();
-                await Task.Delay(500);
+                await Task.Delay(1000);
                 Geef_Kaart();
 
                 while (ScoreSpeler > 21 && AasSpeler > 0)
@@ -140,12 +141,12 @@ namespace Project_Blackjack
                     AasSpeler--;
                 }
                 TxtSScore.Content = ScoreSpeler.ToString();
-                await Task.Delay(500);
+                await Task.Delay(1000);
                 IsSpeler = false;
                 Geef_Kaart();
                 //De tweede kaart van de bank is verborgen voor de speler.
                 BankVerborgenKaart = true;
-                await Task.Delay(500);
+                await Task.Delay(1000);
                 Geef_Kaart();
                 BtnHit.IsEnabled = true;
                 BtnStand.IsEnabled = true;
@@ -156,7 +157,7 @@ namespace Project_Blackjack
                 }
             }
             //Deelknop is resetknop bij einde van spelronde
-            if (rondeVoltooid == true)
+            if (RondeVoltooid == true)
             {
                 Gameronde_Reset();                
             }
@@ -206,7 +207,7 @@ namespace Project_Blackjack
             //Indien blackjack, toon de verborgen kaart van de bank en stop de ronde.
             if (ScoreSpeler >= 21)
             {
-                await Task.Delay(500);
+                await Task.Delay(1000);
                 BankVerborgenKaart = false;
                 LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
                 TxtBScore.Content = ScoreBank.ToString();
@@ -246,7 +247,7 @@ namespace Project_Blackjack
                 }
                 while (ScoreBank < 17)
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(1000);
                     Geef_Kaart();
                 }
                 //Aanpassen waarde van azen indien nodig.
@@ -282,13 +283,13 @@ namespace Project_Blackjack
             Afbeelding_Wijzigen();
             if (MusicPlaying == false)
             {
-                musicPlayer.PlayLooping();
+                MusicPlayer.PlayLooping();
                 MusicPlaying = true;
                 MessageBox.Show($"Geniet van de muziek en dit gratis drankje!", "Verfrissend!");
             }
             else
             {
-                musicPlayer.Stop();
+                MusicPlayer.Stop();
                 MusicPlaying = false;
                 MessageBox.Show($"Geniet van de stilte en dit gratis drankje!", "Verfrissend!");
             }
@@ -609,7 +610,7 @@ namespace Project_Blackjack
             BtnStand.IsEnabled = false;
             BtnDubbel.IsEnabled = false;
             BtnDeel.IsEnabled = true;
-            rondeVoltooid = true;
+            RondeVoltooid = true;
             BtnDeel.Content = "Nieuwe Ronde";
 
             if (ScoreSpeler < 21)
@@ -694,7 +695,7 @@ namespace Project_Blackjack
         /// </summary>
         private void Gameronde_Reset()
         {
-            if (rondeVoltooid == true)
+            if (RondeVoltooid == true)
             {
                 HistoriekTekst = $"{SpelerBudget - RondeBudget} - {ScoreSpeler} / {ScoreBank}";
                 TxtHistoriek.Content = $"Historiek: {HistoriekTekst}";
@@ -761,7 +762,7 @@ namespace Project_Blackjack
             Drankje = true;            
             Afbeelding_Wijzigen();
             MessageBox.Show($"Geniet dit gratis drankje terwijl we uw spel resetten!", "Verfrissend!");
-            rondeVoltooid = false;
+            RondeVoltooid = false;
             BtnDeel.IsEnabled = true;
         }
 
@@ -792,7 +793,7 @@ namespace Project_Blackjack
             AantalKaartSpeler = 0;
             AantalKaartBank = 0;
             BtnDeel.Content = "Deal Cards";
-            rondeVoltooid = false;
+            RondeVoltooid = false;
         }
         /// <summary>
         /// <para>Alle kaarten op het veld zijn toonbaar voor spelers door ze aan te klikken in de lijst.</para>
@@ -923,7 +924,7 @@ namespace Project_Blackjack
             TxtSScore.Content = ScoreSpeler.ToString();
             BtnHit.IsEnabled = true;
             BtnStand.IsEnabled = true;
-            await Task.Delay(500);
+            await Task.Delay(1000);
             if (ScoreSpeler >= 21)
             {
                 LijstBank.Items[1] = $"{VerborgenType} {VerborgenWaarde}";
@@ -956,15 +957,15 @@ namespace Project_Blackjack
         /// <param name="sender">De sender is TxtHistoriek</param>        
         private void Historiek_Click(object sender, MouseButtonEventArgs e)
         {
-            StringBuilder OverzichtSB = new StringBuilder();
+            StringBuilder overzichtSB = new StringBuilder();
             string allHistoriek = HistoriekSB.ToString();
-            OverzichtSB.AppendLine("Dit is het overzicht van alle speelronden, ingedeeld volgens deze structuur:");
-            OverzichtSB.AppendLine("{rondenummer}: {gewonnen of verloren bedrag} – {score speler} / {score bank}");
-            OverzichtSB.AppendLine();
-            OverzichtSB.AppendLine(allHistoriek);
-            allHistoriek = OverzichtSB.ToString();
+            overzichtSB.AppendLine("Dit is het overzicht van alle speelronden, ingedeeld volgens deze structuur:");
+            overzichtSB.AppendLine("{rondenummer}: {gewonnen of verloren bedrag} – {score speler} / {score bank}");
+            overzichtSB.AppendLine();
+            overzichtSB.AppendLine(allHistoriek);
+            allHistoriek = overzichtSB.ToString();
             MessageBox.Show(allHistoriek, "Overzicht");
-            OverzichtSB.Clear();
+            overzichtSB.Clear();
         }
         /// <summary>
         /// BtnCredits_Click dient om de speler te tonen wie aan het project heeft gewerkt en waar de afbeeldingen/muziek vandaan komen.
