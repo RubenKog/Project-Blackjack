@@ -741,6 +741,7 @@ namespace Project_Blackjack
             BtnHit.IsEnabled = false;
             BtnReset.IsEnabled = true;
             BtnStand.IsEnabled = false;
+            BtnDubbel.IsEnabled = false;
             RondeData_Reset();
             RondeBudget = 0;
             RondeCounter = 0;
